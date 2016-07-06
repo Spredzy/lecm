@@ -13,22 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from lecm.version import __version__
+from prettytable import PrettyTable
 
-import argparse
 
-def parse():
+def output_informations(data):
 
-    parser = argparse.ArgumentParser(description='Let''s Encrypt Certificate Manager')
-
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
-
-    parser.add_argument('--conf', help='Path to configuration file')
-    parser.add_argument('-l', '--list', action='store_true',
-        help='List the lecm configured certificates')
-    parser.add_argument('-ld', '--list-details', action='store_true',
-        help='List the lecm configured certificates (in details)')
-
-    options = parser.parse_args()
-
-    return options
+    x = PrettyTable()
+    for column in data:
+        x.add_column(column[0], column[1])
+    print x

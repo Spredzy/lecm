@@ -31,9 +31,10 @@ class Certificate(object):
         self.size = conf.get('size', 4096)
         self.digest = conf.get('digest', 'sha256')
         self.version = conf.get('version', 3)
-        self.subjectAltName = conf.get('subjectAltName')
+        self.subjectAltName = self.normalize_san(conf.get('subjectAltName'))
         self.account_key_name = conf.get('account_key_name')
         self.remaining_days = conf.get('remaining_days', 10)
+        self.days_before_expiry = self.get_days_before_expiry()
 
         self.subject = {
           'C': conf.get('countryName'),
@@ -50,6 +51,35 @@ class Certificate(object):
 
         if self.subjectAltName is None:
             self.subjectAltName = 'DNS:%s' % self.name
+
+
+    def normalize_san(self, san):
+
+      # If an array of SAN is passed in the configuration file
+      #
+      # certificates:
+      #   my.example.org:
+      #     subjectAltName:
+      #       - my.example.org
+      #       - my1.example.org
+      # 
+      # return : DNS:my.example.org,DNS:my1.example.org
+      if isinstance(san, list):
+          san_string = 'DNS;%s' % ',DNS:'.join(san)
+
+      # If a string of SAN is passed but without the proper format
+      #
+      # certificates:
+      #   my.example.org:
+      #     subjectAltName: my.example.org,my1.example.org
+      # 
+      # return : DNS:my.example.org,DNS:my1.example.org
+      elif san and not san.startswith('DNS:'):
+          san_string = 'DNS:%s' % ',DNS:'.join(san.split(','))
+      else:
+          san_string = 'DNS:%s' % self.name
+
+      return san_string
 
 
     def _create_filesystem(self):
@@ -122,7 +152,7 @@ class Certificate(object):
             except OSError:
                 pass
             raise #PrivateKeyError(get_exception())
-    
+
 
     def _create_csr(self):
         req = crypto.X509Req()
@@ -169,16 +199,20 @@ class Certificate(object):
                with open(fname) as infile:
                    outfile.write(infile.read())
 
-    def list_time(self):
-        x509_content = open('%s/pem/%s.pem' % (self.path, self.name)).read()
+
+    def get_days_before_expiry(self):
+        try:
+            x509_content = open('%s/pem/%s.pem' % (self.path, self.name)).read()
+        except IOError:
+            return 'N/A'
         x509 = crypto.load_certificate(crypto.FILETYPE_PEM, x509_content)
 
         notAfter = x509.get_notAfter()[:-1]
         notAfter_datetime = datetime.datetime.strptime(notAfter, '%Y%m%d%H%M%S')
         now_datetime = datetime.datetime.now()
 
-        if (notAfter_datetime - now_datetime).days <= self.remaining_days:
-            print 'renew'
+        return (notAfter_datetime - now_datetime).days
+
 
     def generate_or_renew(self):
 
@@ -202,4 +236,3 @@ class Certificate(object):
         if not os.path.exists('%s/certs/%s.key' %
                               (self.path, self.name)):
             self._create_certificate()
-        

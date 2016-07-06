@@ -16,6 +16,9 @@
 from lecm import certificate
 from lecm import configuration
 from lecm import parser
+from lecm import utils
+
+import os
 
 
 def main():
@@ -25,7 +28,58 @@ def main():
     global_configuration = configuration.load_configuration()
     certificates = configuration.expand_configuration(global_configuration)
 
-    for name, parameters in certificates.iteritems():
-        cert = certificate.Certificate(parameters)
+    if options.list:
+        result = [['Item', []],
+              ['Status', []],
+              ['subjectAltName', []],
+              ['Location', []],
+              ['Days', []]]
+        for name, parameters in certificates.iteritems():
+            cert = certificate.Certificate(parameters)
 
-    cert.generate_or_renew()
+            result[0][1].append(cert.name)
+            if os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
+                result[1][1].append('Generated')
+            else:
+                result[1][1].append('Not-Generated')
+            result[2][1].append(cert.subjectAltName)
+            result[3][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
+            result[4][1].append(cert.days_before_expiry)
+
+        utils.output_informations(result)
+
+    elif options.list_details:
+        result = [['Item', []],
+              ['Status', []],
+              ['subjectAltName', []],
+              ['emailAddress', []],
+              ['Location', []],
+              ['Type', []],
+              ['Size', []],
+              ['Digest', []],
+              ['Days', []]]
+        for name, parameters in certificates.iteritems():
+            cert = certificate.Certificate(parameters)
+
+            result[0][1].append(cert.name)
+            if os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
+                result[1][1].append('Generated')
+            else:
+                result[1][1].append('Not-Generated')
+            result[2][1].append(cert.subjectAltName)
+            result[3][1].append(cert.subject['emailAddress'])
+            result[4][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
+            result[5][1].append(cert.type)
+            result[6][1].append(cert.size)
+            result[7][1].append(cert.digest)
+            result[8][1].append(cert.days_before_expiry)
+
+        utils.output_informations(result)
+
+
+    else:
+        for name, parameters in certificates.iteritems():
+            cert = certificate.Certificate(parameters)
+
+        #cert.generate_or_renew()
+        cert.list_time()
