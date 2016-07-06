@@ -16,6 +16,7 @@
 from OpenSSL import crypto
 
 import os
+import subprocess
 
 class Certificate(object):
 
@@ -138,6 +139,17 @@ class Certificate(object):
         csr_file.close()
 
 
+    def _create_certificate(self):
+       command = 'acme-tiny --account-key %s/private/%s --csr %s/csr/%s.csr --acme-dir %s/challenges/%s' % (self.path, self.account_key_name, self.path, self.name, self.path, self.name)
+
+       cert_file_f = open('%s/certs/%s.crt' % (self.path, self.name), 'w')
+
+
+       FNULL = open(os.devnull, 'w')
+       p = subprocess.Popen(command.split(), stdout=cert_file_f, stderr=FNULL)
+       p.wait()
+
+
     def generate_or_renew(self):
 
         self._create_filesystem()
@@ -152,4 +164,11 @@ class Certificate(object):
         if not os.path.exists('%s/csr/%s.csr' %
                               (self.path, self.name)):
             self._create_csr()
+
+        if not os.path.exists('%s/challenges/%s' % (self.path, self.name)):
+            os.makedirs('%s/challenges/%s' % (self.path, self.name))
+
+        if not os.path.exists('%s/certs/%s.key' %
+                              (self.path, self.name)):
+            self._create_certificate()
         
