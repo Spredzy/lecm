@@ -75,7 +75,7 @@ class Certificate(object):
             accountkey_file.close()
         except IOError:
             try:
-                os.remove('%s/private/%s.crt' %
+                os.remove('%s/private/%s.key' %
                          (self.path, self.account_key_name))
             except OSError:
                 pass
@@ -96,14 +96,14 @@ class Certificate(object):
             raise #PrivateKeyError(get_exception())
 
         try:
-            privatekey_file = open('%s/private/%s.crt' %
+            privatekey_file = open('%s/private/%s.key' %
                                    (self.path, self.name), 'w')
             privatekey_file.write(crypto.dump_privatekey(crypto.FILETYPE_PEM,
                                                          private_key))
             privatekey_file.close()
         except IOError:
             try:
-                os.remove('%s/private/%s.crt' % (self.path, self.name))
+                os.remove('%s/private/%s.key' % (self.path, self.name))
             except OSError:
                 pass
             raise #PrivateKeyError(get_exception())
@@ -123,7 +123,7 @@ class Certificate(object):
             req.add_extensions([crypto.X509Extension('subjectAltName', False,
                                                      self.subjectAltName)])
 
-        privatekey_content = open('%s/private/%s.crt' %
+        privatekey_content = open('%s/private/%s.key' %
                                   (self.path, self.name)).read()
 
         privatekey = crypto.load_privatekey(crypto.FILETYPE_PEM,
@@ -145,7 +145,7 @@ class Certificate(object):
                               (self.path, self.account_key_name)):
             self._create_account_key()
 
-        if not os.path.exists('%s/private/%s.crt' %
+        if not os.path.exists('%s/private/%s.key' %
                               (self.path, self.name)):
             self._create_private_key()
 
