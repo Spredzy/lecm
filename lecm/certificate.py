@@ -66,7 +66,7 @@ class Certificate(object):
       # 
       # return : DNS:my.example.org,DNS:my1.example.org
       if isinstance(san, list):
-          san_string = 'DNS;%s' % ',DNS:'.join(san)
+          san_string = 'DNS:%s' % ',DNS:'.join(san)
 
       # If a string of SAN is passed but without the proper format
       #
@@ -164,9 +164,8 @@ class Certificate(object):
             if value is not None:
                 setattr(subject, key, value)
 
-        if self.subjectAltName is not None:
-            req.add_extensions([crypto.X509Extension('subjectAltName', False,
-                                                     self.subjectAltName)])
+        req.add_extensions([crypto.X509Extension('subjectAltName', False,
+                                                 self.subjectAltName)])
 
         privatekey_content = open('%s/private/%s.key' %
                                   (self.path, self.name)).read()

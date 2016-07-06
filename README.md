@@ -98,6 +98,7 @@ version: 3
 service_name: httpd
 remaining_days: 10
 emailAddress: admin@example.com
+accounty_key_name: myhost.key
 
 certificates:
   my.example.com:
