@@ -214,7 +214,7 @@ class Certificate(object):
         return (notAfter_datetime - now_datetime).days
 
 
-    def generate_or_renew(self):
+    def generate(self):
 
         self._create_filesystem()
         self._get_intermediate_certificate()
@@ -236,3 +236,15 @@ class Certificate(object):
         if not os.path.exists('%s/certs/%s.key' %
                               (self.path, self.name)):
             self._create_certificate()
+
+
+    def renew(self):
+        try:
+            os.remove('%s/csr/%s.csr' % (self.path, self.name))
+            os.remove('%s/certs/%s.key' % (self.path, self.name))
+            os.remove('%s/pem/%s.pem' % (self.path, self.name))
+        except OSError:
+            pass
+        
+        self._create_csr()
+        self._create_certificate()

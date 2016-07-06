@@ -80,6 +80,9 @@ def main():
     else:
         for name, parameters in certificates.iteritems():
             cert = certificate.Certificate(parameters)
-
-        #cert.generate_or_renew()
-        cert.list_time()
+            if options.generate:
+                if not os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
+                    cert.generate()
+            elif options.renew:
+                if cert.days_before_expiry <= cert.remaining_days:
+                    cert.renew()

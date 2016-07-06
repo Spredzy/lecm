@@ -29,6 +29,10 @@ def parse():
     parser.add_argument('-ld', '--list-details', action='store_true',
         help='List the lecm configured certificates (in details)')
 
+    parser.add_argument('--generate', action='store_true',
+        help='Generate Let''s Encrypt SSL Certificates')
+    parser.add_argument('--renew', action='store_true',
+        help='Renew already generated SSL Certificates')
     options = parser.parse_args()
 
     return options
