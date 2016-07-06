@@ -160,6 +160,13 @@ class Certificate(object):
        p = subprocess.Popen(command.split(), stdout=cert_file_f, stderr=FNULL)
        p.wait()
 
+       filenames = ['%s/certs/%s.crt' % (self.path, self.name),
+                    '%s/pem/%s' % (self.path, os.path.basename(_INTERMEDIATE_CERTIFICATE_URL))]
+       with open('%s/pem/%s.pem' % (self.path, self.name), 'w') as outfile:
+           for fname in filenames:
+               with open(fname) as infile:
+                   outfile.write(infile.read())
+
 
     def generate_or_renew(self):
 
