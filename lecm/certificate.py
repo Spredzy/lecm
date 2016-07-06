@@ -15,6 +15,7 @@
 
 from OpenSSL import crypto
 
+import datetime
 import os
 import requests
 import subprocess
@@ -27,11 +28,12 @@ class Certificate(object):
         self.name = conf.get('name')
         self.path = conf.get('path')
         self.type = conf.get('type')
-        self.size = conf.get('size', '4096')
+        self.size = conf.get('size', 4096)
         self.digest = conf.get('digest', 'sha256')
         self.version = conf.get('version', 3)
         self.subjectAltName = conf.get('subjectAltName')
         self.account_key_name = conf.get('account_key_name')
+        self.remaining_days = conf.get('remaining_days', 10)
 
         self.subject = {
           'C': conf.get('countryName'),
@@ -167,6 +169,16 @@ class Certificate(object):
                with open(fname) as infile:
                    outfile.write(infile.read())
 
+    def list_time(self):
+        x509_content = open('%s/pem/%s.pem' % (self.path, self.name)).read()
+        x509 = crypto.load_certificate(crypto.FILETYPE_PEM, x509_content)
+
+        notAfter = x509.get_notAfter()[:-1]
+        notAfter_datetime = datetime.datetime.strptime(notAfter, '%Y%m%d%H%M%S')
+        now_datetime = datetime.datetime.now()
+
+        if (notAfter_datetime - now_datetime).days <= self.remaining_days:
+            print 'renew'
 
     def generate_or_renew(self):
 

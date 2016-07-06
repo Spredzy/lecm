@@ -22,7 +22,7 @@ import yaml
 _FIELDS = ['type', 'size', 'digest', 'version', 'subjectAltName',
            'countryName', 'stateOrProvinceName', 'localityName',
            'organizationName', 'organizationUnitName', 'commonName',
-           'emailAddress', 'account_key_name', 'path']
+           'emailAddress', 'account_key_name', 'path', 'remaining_days']
 
 
 def load_configuration():
