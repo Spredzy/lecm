@@ -16,7 +16,10 @@
 from OpenSSL import crypto
 
 import os
+import requests
 import subprocess
+
+_INTERMEDIATE_CERTIFICATE_URL = 'https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem'
 
 class Certificate(object):
 
@@ -53,6 +56,15 @@ class Certificate(object):
         for folder in _FOLDERS:
             if not os.path.exists('%s/%s' % (self.path, folder)):
                 os.makedirs('%s/%s' % (self.path, folder))
+
+
+    def _get_intermediate_certificate(self):
+        certificate = requests.get(_INTERMEDIATE_CERTIFICATE_URL).text
+        certificate_name = os.path.basename(_INTERMEDIATE_CERTIFICATE_URL)
+
+        if not os.path.exists('%s/pem/%s' % (self.path, certificate_name)):
+            with open('%s/pem/%s' % (self.path, certificate_name), 'w') as f:
+                f.write(certificate)
 
 
     def _create_account_key(self):
@@ -112,8 +124,7 @@ class Certificate(object):
 
     def _create_csr(self):
         req = crypto.X509Req()
-        # req.set_version(self.version)
-        req.set_version(3)
+        req.set_version(self.version)
         subject = req.get_subject()
 
         for (key,value) in self.subject.items():
@@ -153,6 +164,7 @@ class Certificate(object):
     def generate_or_renew(self):
 
         self._create_filesystem()
+        self._get_intermediate_certificate()
         if not os.path.exists('%s/private/%s' %
                               (self.path, self.account_key_name)):
             self._create_account_key()
