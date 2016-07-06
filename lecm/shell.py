@@ -25,7 +25,11 @@ def main():
 
     options = parser.parse()
 
-    global_configuration = configuration.load_configuration()
+    _CONF = {}
+    if options.conf:
+        _CONF['file_path'] = options.conf
+
+    global_configuration = configuration.load_configuration(_CONF)
     certificates = configuration.expand_configuration(global_configuration)
 
     if options.list:

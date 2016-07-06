@@ -111,7 +111,7 @@ class Certificate(object):
         try:
             account_key.generate_key(crypto_type, self.size)
         except (TypeError, ValueError):
-            raise #PrivateKeyError(get_exception())
+            raise
 
         try:
             accountkey_file = open('%s/private/%s' %
@@ -125,7 +125,7 @@ class Certificate(object):
                          (self.path, self.account_key_name))
             except OSError:
                 pass
-            raise #PrivateKeyError(get_exception())
+            raise
 
 
     def _create_private_key(self):
@@ -139,7 +139,7 @@ class Certificate(object):
         try:
             private_key.generate_key(crypto_type, self.size)
         except (TypeError, ValueError):
-            raise #PrivateKeyError(get_exception())
+            raise
 
         try:
             privatekey_file = open('%s/private/%s.key' %
@@ -152,7 +152,7 @@ class Certificate(object):
                 os.remove('%s/private/%s.key' % (self.path, self.name))
             except OSError:
                 pass
-            raise #PrivateKeyError(get_exception())
+            raise
 
 
     def _create_csr(self):

@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from swiftbackmeup import exceptions
+from lecm import exceptions
 
 import os
 import yaml
@@ -26,12 +26,31 @@ _FIELDS = ['type', 'size', 'digest', 'version', 'subjectAltName',
            'service_name']
 
 
-def load_configuration():
-    """Load the swiftbackmeup configuration file."""
+def check_configuration_file_existence(configuration_file_path=None):
+    """Check if the configuration file is present."""
 
-    file_path = '../sample/lecm.conf'
+    if configuration_file_path:
+        if not os.path.exists(configuration_file_path):
+            raise exceptions.ConfigurationExceptions('File %s does not exist' % configuration_file_path)
+        file_path = configuration_file_path
+    elif os.getenv('LECM_CONFIGURATION'):
+        if not os.path.exists(os.getenv('LECM_CONFIGURATION')):
+            raise exceptions.ConfigurationExceptions('File %s does not exist' % os.getenv('LECM_CONFIGURATION'))
+        file_path = os.getenv('LECM_CONFIGURATION')
+    else:
+        if not os.path.exists('/etc/lecm.conf'):
+            raise exceptions.ConfigurationExceptions(
+                'File /etc/lecm.conf does not exist (you could specify an alternate location using --conf)'
+            )
+        file_path = '/etc/lecm.conf'
 
-    # file_path = check_configuration_file_existence(conf.get('file_path'))
+    return file_path
+
+
+def load_configuration(conf):
+    """Load the lecm configuration file."""
+
+    file_path = check_configuration_file_existence(conf.get('file_path'))
 
     try:
         file_path_content = open(file_path, 'r').read()
