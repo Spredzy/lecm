@@ -13,14 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from lecm.version import __version__
+
 import argparse
 
 def parse():
 
-    parser = argparse.ArgumentParser(description='lecm')
+    parser = argparse.ArgumentParser(description='Let''s Encrypt Certificate Manager')
 
     parser.add_argument('--conf',
         help='Path to configuration file')
+
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
 
     options = parser.parse_args()
 
