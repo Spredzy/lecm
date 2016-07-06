@@ -35,6 +35,7 @@ class Certificate(object):
         self.account_key_name = conf.get('account_key_name')
         self.remaining_days = conf.get('remaining_days', 10)
         self.days_before_expiry = self.get_days_before_expiry()
+        self.service_name = conf.get('service_name')
 
         self.subject = {
           'C': conf.get('countryName'),
@@ -248,3 +249,9 @@ class Certificate(object):
         
         self._create_csr()
         self._create_certificate()
+
+
+    def reload_service(self):
+        if self.service_name:
+            command = 'systemctl reload %s' % self.service_name
+            subprocess.Popen(command.split())

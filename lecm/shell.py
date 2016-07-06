@@ -86,3 +86,4 @@ def main():
             elif options.renew:
                 if cert.days_before_expiry <= cert.remaining_days:
                     cert.renew()
+            cert.reload_service()
