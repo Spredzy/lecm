@@ -18,12 +18,14 @@ from lecm import configuration
 from lecm import parser
 from lecm import utils
 
+import logging
 import os
 
 
 def main():
 
     options = parser.parse()
+    logging.basicConfig(level=logging.INFO)
 
     _CONF = {}
     if options.conf:
@@ -87,7 +89,8 @@ def main():
             if options.generate:
                 if not os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
                     cert.generate()
+                    cert.reload_service()
             elif options.renew:
                 if cert.days_before_expiry <= cert.remaining_days:
                     cert.renew()
-            cert.reload_service()
+                    cert.reload_service()
