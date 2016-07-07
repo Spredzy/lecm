@@ -15,9 +15,12 @@
 
 from lecm import exceptions
 
+import logging
 import os
 import yaml
 
+
+LOG = logging.getLogger(__name__)
 
 _FIELDS = ['type', 'size', 'digest', 'version', 'subjectAltName',
            'countryName', 'stateOrProvinceName', 'localityName',
@@ -44,6 +47,7 @@ def check_configuration_file_existence(configuration_file_path=None):
             )
         file_path = '/etc/lecm.conf'
 
+    LOG.debug('Configuration file used: %s' % file_path)
     return file_path
 
 
