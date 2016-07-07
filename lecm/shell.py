@@ -40,10 +40,10 @@ def main():
 
     if options.list:
         result = [['Item', []],
-              ['Status', []],
-              ['subjectAltName', []],
-              ['Location', []],
-              ['Days', []]]
+                  ['Status', []],
+                  ['subjectAltName', []],
+                  ['Location', []],
+                  ['Days', []]]
         for name, parameters in certificates.iteritems():
             cert = certificate.Certificate(parameters)
 
@@ -57,17 +57,16 @@ def main():
             result[4][1].append(cert.days_before_expiry)
 
         utils.output_informations(result)
-
     elif options.list_details:
         result = [['Item', []],
-              ['Status', []],
-              ['subjectAltName', []],
-              ['emailAddress', []],
-              ['Location', []],
-              ['Type', []],
-              ['Size', []],
-              ['Digest', []],
-              ['Days', []]]
+                  ['Status', []],
+                  ['subjectAltName', []],
+                  ['emailAddress', []],
+                  ['Location', []],
+                  ['Type', []],
+                  ['Size', []],
+                  ['Digest', []],
+                  ['Days', []]]
         for name, parameters in certificates.iteritems():
             cert = certificate.Certificate(parameters)
 
@@ -85,18 +84,15 @@ def main():
             result[8][1].append(cert.days_before_expiry)
 
         utils.output_informations(result)
-
-
     else:
         for name, parameters in certificates.iteritems():
             cert = certificate.Certificate(parameters)
             if options.generate:
-                if not os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
-                    rc = cert.generate()
-                    if rc:
-                        cert.reload_service()
+                if not os.path.exists('%s/pem/%s.pem' %
+                                      (cert.path, cert.name)):
+                    cert.generate()
+                    cert.reload_service()
             elif options.renew:
                 if cert.days_before_expiry <= cert.remaining_days:
-                    rc = cert.renew()
-                    if rc:
-                        cert.reload_service()
+                    cert.renew()
+                    cert.reload_service()

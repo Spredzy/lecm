@@ -17,23 +17,28 @@ from lecm.version import __version__
 
 import argparse
 
+
 def parse():
 
-    parser = argparse.ArgumentParser(description='Let''s Encrypt Certificate Manager')
+    parser = argparse.ArgumentParser(
+        description='Let''s Encrypt Certificate Manager'
+    )
 
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
-    parser.add_argument('--debug', action='store_true', help='Display DEBUG information level')
+    parser.add_argument('-v', '--version', action='version',
+                        version='%(prog)s ' + __version__)
+    parser.add_argument('--debug', action='store_true',
+                        help='Display DEBUG information level')
 
     parser.add_argument('--conf', help='Path to configuration file')
     parser.add_argument('-l', '--list', action='store_true',
-        help='List the lecm configured certificates')
+                        help='List the lecm configured certificates')
     parser.add_argument('-ld', '--list-details', action='store_true',
-        help='List the lecm configured certificates (in details)')
+                        help='List the lecm configured certificates(details)')
 
     parser.add_argument('--generate', action='store_true',
-        help='Generate Let''s Encrypt SSL Certificates')
+                        help='Generate Let''s Encrypt SSL Certificates')
     parser.add_argument('--renew', action='store_true',
-        help='Renew already generated SSL Certificates')
+                        help='Renew already generated SSL Certificates')
     options = parser.parse_args()
 
     return options

@@ -1,12 +1,12 @@
 # Copyright 2016 Yanis Guenane <yguenane@redhat.com>
 # Author: Yanis Guenane <yguenane@redhat.com>
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,8 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     author='Yanis Guenane',
     author_email='yguenane@redhat.com',
-    description='Tools to manage Let''s Encrypt certificates from configuration file',
+    description='Tool to manage Let''s Encrypt certificates \
+                  from configuration file',
     long_description=_get_readme(),
     install_requires=_get_requirements(),
     url='https://github.com/redhat-cip/lecm',
