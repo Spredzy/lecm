@@ -23,7 +23,9 @@ import subprocess
 
 LOG = logging.getLogger(__name__)
 
-_INTERMEDIATE_CERTIFICATE_URL = 'https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem'
+_INTERMEDIATE_CERTIFICATE_URL = \
+    'https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem'
+
 
 class Certificate(object):
 
@@ -56,54 +58,52 @@ class Certificate(object):
         if self.subjectAltName is None:
             self.subjectAltName = 'DNS:%s' % self.name
 
-
     def normalize_san(self, san):
 
-      # If an array of SAN is passed in the configuration file
-      #
-      # certificates:
-      #   my.example.org:
-      #     subjectAltName:
-      #       - my.example.org
-      #       - my1.example.org
-      # 
-      # return : DNS:my.example.org,DNS:my1.example.org
-      if isinstance(san, list):
-          san_string = 'DNS:%s' % ',DNS:'.join(san)
+        # If an array of SAN is passed in the configuration file
+        #
+        # certificates:
+        #   my.example.org:
+        #     subjectAltName:
+        #       - my.example.org
+        #       - my1.example.org
+        #
+        # return : DNS:my.example.org,DNS:my1.example.org
+        if isinstance(san, list):
+            san_string = 'DNS:%s' % ',DNS:'.join(san)
 
-      # If a string of SAN is passed but without the proper format
-      #
-      # certificates:
-      #   my.example.org:
-      #     subjectAltName: my.example.org,my1.example.org
-      # 
-      # return : DNS:my.example.org,DNS:my1.example.org
-      elif san and not san.startswith('DNS:'):
-          san_string = 'DNS:%s' % ',DNS:'.join(san.split(','))
-      else:
-          san_string = 'DNS:%s' % self.name
+        # If a string of SAN is passed but without the proper format
+        #
+        # certificates:
+        #   my.example.org:
+        #     subjectAltName: my.example.org,my1.example.org
+        #
+        # return : DNS:my.example.org,DNS:my1.example.org
+        elif san and not san.startswith('DNS:'):
+            san_string = 'DNS:%s' % ',DNS:'.join(san.split(','))
+        else:
+            san_string = 'DNS:%s' % self.name
 
-      return san_string
-
+        return san_string
 
     def _create_filesystem(self):
         _FOLDERS = ['csr', 'challenges', 'pem', 'private', 'certs']
 
         for folder in _FOLDERS:
-            LOG.debug('[global] Ensure path exist: %s/%s' % (self.path, folder))
+            LOG.debug('[global] Ensure path exist: %s/%s' %
+                      (self.path, folder))
             if not os.path.exists('%s/%s' % (self.path, folder)):
                 os.makedirs('%s/%s' % (self.path, folder))
-
 
     def _get_intermediate_certificate(self):
         certificate = requests.get(_INTERMEDIATE_CERTIFICATE_URL).text
         certificate_name = os.path.basename(_INTERMEDIATE_CERTIFICATE_URL)
 
-        LOG.info('[global] Getting intermediate certificate PEM file: %s' % certificate_name)
+        LOG.info('[global] Getting intermediate certificate PEM file: %s' %
+                 certificate_name)
         if not os.path.exists('%s/pem/%s' % (self.path, certificate_name)):
             with open('%s/pem/%s' % (self.path, certificate_name), 'w') as f:
                 f.write(certificate)
-
 
     def _create_account_key(self):
         account_key = crypto.PKey()
@@ -114,14 +114,16 @@ class Certificate(object):
             crypto_type = crypto.TYPE_DSA
 
         try:
-            LOG.info('[global] Generating account key: %s (type: %s, size: %s)' %
+            LOG.info('[global] Generating account key: %s \
+                     (type: %s, size: %s)' %
                      (self.account_key_name, self.type, self.size))
             account_key.generate_key(crypto_type, self.size)
         except (TypeError, ValueError):
             raise
 
         try:
-            LOG.debug('[global] Writting account key: %s/private/%s' % (self.path, self.account_key_name))
+            LOG.debug('[global] Writting account key: %s/private/%s' %
+                      (self.path, self.account_key_name))
             accountkey_file = open('%s/private/%s' %
                                    (self.path, self.account_key_name), 'w')
             accountkey_file.write(crypto.dump_privatekey(crypto.FILETYPE_PEM,
@@ -130,11 +132,10 @@ class Certificate(object):
         except IOError:
             try:
                 os.remove('%s/private/%s.key' %
-                         (self.path, self.account_key_name))
+                          (self.path, self.account_key_name))
             except OSError:
                 pass
             raise
-
 
     def _create_private_key(self):
         private_key = crypto.PKey()
@@ -145,13 +146,15 @@ class Certificate(object):
             crypto_type = crypto.TYPE_DSA
 
         try:
-            LOG.info('[%s] Generating private key (type: %s, size: %s)' % (self.name, self.type, self.size))
+            LOG.info('[%s] Generating private key (type: %s, size: %s)' %
+                     (self.name, self.type, self.size))
             private_key.generate_key(crypto_type, self.size)
         except (TypeError, ValueError):
             raise
 
         try:
-            LOG.debug('[%s] Writting private key: %s/private/%s.key' % (self.name, self.path, self.name))
+            LOG.debug('[%s] Writting private key: %s/private/%s.key' %
+                      (self.name, self.path, self.name))
             privatekey_file = open('%s/private/%s.key' %
                                    (self.path, self.name), 'w')
             privatekey_file.write(crypto.dump_privatekey(crypto.FILETYPE_PEM,
@@ -164,25 +167,27 @@ class Certificate(object):
                 pass
             raise
 
-
     def _create_csr(self):
         LOG.info('[%s] Generating CSR' % self.name)
         req = crypto.X509Req()
-        LOG.debug('[%s] Attaching Certificate Version to CSR: %s' % (self.name, self.version))
+        LOG.debug('[%s] Attaching Certificate Version to CSR: %s' %
+                  (self.name, self.version))
         req.set_version(self.version)
         subject = req.get_subject()
 
-        for (key,value) in self.subject.items():
+        for (key, value) in self.subject.items():
             if value is not None:
-                LOG.debug('[%s] Attaching %s to CSR: %s' % (self.name, key, value))
+                LOG.debug('[%s] Attaching %s to CSR: %s' %
+                          (self.name, key, value))
                 setattr(subject, key, value)
 
-        LOG.info('[%s] Attaching SAN extention: %s' % (self.name, self.subjectAltName))
+        LOG.info('[%s] Attaching SAN extention: %s' %
+                 (self.name, self.subjectAltName))
         req.add_extensions([crypto.X509Extension('subjectAltName', False,
                                                  self.subjectAltName)])
 
         LOG.debug('[%s] Loading private key: %s/private/%s.key' %
-                 (self.name, self.path, self.name))
+                  (self.name, self.path, self.name))
         privatekey_content = open('%s/private/%s.key' %
                                   (self.path, self.name)).read()
 
@@ -193,56 +198,63 @@ class Certificate(object):
         req.set_pubkey(privatekey)
         req.sign(privatekey, self.digest)
 
-
-        LOG.debug('[%s] Writting CSR: %s/csr/%s.csr' % (self.name, self.path, self.name))
+        LOG.debug('[%s] Writting CSR: %s/csr/%s.csr' %
+                  (self.name, self.path, self.name))
         csr_file = open('%s/csr/%s.csr' % (self.path, self.name), 'w')
         csr_file.write(crypto.dump_certificate_request(crypto.FILETYPE_PEM,
                                                        req))
         csr_file.close()
 
-
     def _create_certificate(self):
-       LOG.info('[%s] Retrieving certificate from Let''s Encrypt Server' % self.name)
-       command = 'acme-tiny --account-key %s/private/%s --csr %s/csr/%s.csr --acme-dir %s/challenges/%s' % (self.path, self.account_key_name, self.path, self.name, self.path, self.name)
+        LOG.info('[%s] Retrieving certificate from Let''s Encrypt Server' %
+                 self.name)
+        command = 'acme-tiny --account-key %s/private/%s --csr %s/csr/%s.csr \
+                  --acme-dir %s/challenges/%s' % (self.path,
+                                                  self.account_key_name,
+                                                  self.path, self.name,
+                                                  self.path, self.name)
 
-       cert_file_f = open('%s/certs/%s.crt.new' % (self.path, self.name), 'w')
+        cert_file_f = open('%s/certs/%s.crt.new' % (self.path, self.name), 'w')
 
+        p = subprocess.Popen(command.split(), stdout=cert_file_f,
+                             stderr=subprocess.PIPE)
+        out, err = p.communicate()
 
-       FNULL = open(os.devnull, 'w')
-       p = subprocess.Popen(command.split(), stdout=cert_file_f, stderr=subprocess.PIPE)
-       out, err = p.communicate()
+        if p.returncode != 0:
+            LOG.error('[%s] %s' % (self.name, err))
+            os.remove('%s/certs/%s.crt.new' % (self.path, self.name))
+            return False
+        else:
+            LOG.debug('[%s] Writting certificate: %s/certs/%s.crt' %
+                      (self.name, self.path, self.name))
+            os.rename('%s/certs/%s.crt.new' % (self.path, self.name),
+                      '%s/certs/%s.crt' % (self.path, self.name))
 
-       if p.returncode != 0:
-           LOG.error('[%s] %s' % (self.name, err))
-           os.remove('%s/certs/%s.crt.new' % (self.path, self.name))
-           return False
-       else:
-           LOG.debug('[%s] Writting certificate: %s/certs/%s.crt' % (self.name, self.path, self.name))
-           os.rename('%s/certs/%s.crt.new' % (self.path, self.name), '%s/certs/%s.crt' % (self.path, self.name))
-
-           LOG.debug('[%s] Concatenating certificate with intermediate pem: %s/pem/%s.pem' % (self.name, self.path, self.name))
-           filenames = ['%s/certs/%s.crt' % (self.path, self.name),
-                        '%s/pem/%s' % (self.path, os.path.basename(_INTERMEDIATE_CERTIFICATE_URL))]
-           with open('%s/pem/%s.pem' % (self.path, self.name), 'w') as outfile:
-               for fname in filenames:
-                   with open(fname) as infile:
-                       outfile.write(infile.read())
-       return True
-
+            LOG.debug('[%s] Concatenating certificate with intermediate pem: \
+                      %s/pem/%s.pem' % (self.name, self.path, self.name))
+            pem_filename = os.path.basename(_INTERMEDIATE_CERTIFICATE_URL)
+            filenames = ['%s/certs/%s.crt' % (self.path, self.name),
+                         '%s/pem/%s' % (self.path, pem_filename)]
+            with open('%s/pem/%s.pem' % (self.path, self.name), 'w') as f:
+                for fname in filenames:
+                    with open(fname) as infile:
+                        f.write(infile.read())
+        return True
 
     def get_days_before_expiry(self):
         try:
-            x509_content = open('%s/pem/%s.pem' % (self.path, self.name)).read()
+            x509_content = open('%s/pem/%s.pem' %
+                                (self.path, self.name)).read()
         except IOError:
             return 'N/A'
         x509 = crypto.load_certificate(crypto.FILETYPE_PEM, x509_content)
 
         notAfter = x509.get_notAfter()[:-1]
-        notAfter_datetime = datetime.datetime.strptime(notAfter, '%Y%m%d%H%M%S')
+        notAfter_datetime = datetime.datetime.strptime(notAfter,
+                                                       '%Y%m%d%H%M%S')
         now_datetime = datetime.datetime.now()
 
         return (notAfter_datetime - now_datetime).days
-
 
     def generate(self):
 
@@ -267,30 +279,32 @@ class Certificate(object):
                               (self.path, self.name)):
             self._create_certificate()
 
-
     def renew(self):
         try:
-            LOG.debug('[%s] Removing exising CSR: %s/csr/%s.csr' % (self.name, self.path, self.name))
+            LOG.debug('[%s] Removing exising CSR: %s/csr/%s.csr' %
+                      (self.name, self.path, self.name))
             os.remove('%s/csr/%s.csr' % (self.path, self.name))
         except OSError:
             pass
         try:
-            LOG.debug('[%s] Removing exising PEM file: %s/pem/%s.pem' % (self.name, self.path, self.name))
+            LOG.debug('[%s] Removing exising PEM file: %s/pem/%s.pem' %
+                      (self.name, self.path, self.name))
             os.remove('%s/pem/%s.pem' % (self.path, self.name))
         except OSError:
             pass
         try:
-            LOG.debug('[%s] Removing exising cert file: %s/certs/%s.crt' % (self.name, self.path, self.name))
+            LOG.debug('[%s] Removing exising cert file: %s/certs/%s.crt' %
+                      (self.name, self.path, self.name))
             os.remove('%s/certs/%s.crt' % (self.path, self.name))
         except OSError:
             pass
-        
+
         self._create_csr()
         self._create_certificate()
 
-
     def reload_service(self):
         if self.service_name:
-            LOG.info('[%s] Reloading service specified: %s' % (self.name, self.service_name))
+            LOG.info('[%s] Reloading service specified: %s' %
+                     (self.name, self.service_name))
             command = 'systemctl reload %s' % self.service_name
             subprocess.Popen(command.split())

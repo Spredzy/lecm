@@ -34,16 +34,22 @@ def check_configuration_file_existence(configuration_file_path=None):
 
     if configuration_file_path:
         if not os.path.exists(configuration_file_path):
-            raise exceptions.ConfigurationExceptions('File %s does not exist' % configuration_file_path)
+            raise exceptions.ConfigurationExceptions(
+                      'File %s does not exist' % configuration_file_path
+                  )
         file_path = configuration_file_path
     elif os.getenv('LECM_CONFIGURATION'):
         if not os.path.exists(os.getenv('LECM_CONFIGURATION')):
-            raise exceptions.ConfigurationExceptions('File %s does not exist' % os.getenv('LECM_CONFIGURATION'))
+            raise exceptions.ConfigurationExceptions(
+                      'File %s does not exist' %
+                      os.getenv('LECM_CONFIGURATION')
+                  )
         file_path = os.getenv('LECM_CONFIGURATION')
     else:
         if not os.path.exists('/etc/lecm.conf'):
             raise exceptions.ConfigurationExceptions(
-                'File /etc/lecm.conf does not exist (you could specify an alternate location using --conf)'
+                'File /etc/lecm.conf does not exist (you could specify an '
+                'alternate location using --conf)'
             )
         file_path = '/etc/lecm.conf'
 

@@ -1,4 +1,4 @@
-# Copyright 2016 Yanis Guenane <yguenane@redhat.com>                                                                                                                        
+# Copyright 2016 Yanis Guenane <yguenane@redhat.com>
 # Author: Yanis Guenane <yguenane@redhat.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import exceptions
-import sys 
+import logging
+import sys
+
+
+LOG = logging.getLogger(__name__)
+
 
 class ConfigurationExceptions(Exception):
 
     def __init__(self, message):
-        print message
+        LOG.error(message)
         sys.exit(1)

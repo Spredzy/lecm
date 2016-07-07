@@ -21,4 +21,4 @@ def output_informations(data):
     x = PrettyTable()
     for column in data:
         x.add_column(column[0], column[1])
-    print x
+    print(x)

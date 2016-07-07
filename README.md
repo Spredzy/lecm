@@ -1,5 +1,9 @@
 # Let's Encrypt Certificate Manager
 
+[![Build Status](https://travis-ci.org/Spredzy/lecm.png)](https://travis-ci.org/Spredzy/lecm)
+[![Latest Release](https://img.shields.io/pypi/v/lecm.svg)](https://pypi.python.org/pypi/lecm)
+
+
 Let's Encrypt Certificate Manager (lecm) is an utility that allows one to
 manage (generate and renew) Let's Encrypt SSL certificates.
 
