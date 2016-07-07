@@ -92,9 +92,11 @@ def main():
             cert = certificate.Certificate(parameters)
             if options.generate:
                 if not os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
-                    cert.generate()
-                    cert.reload_service()
+                    rc = cert.generate()
+                    if rc:
+                        cert.reload_service()
             elif options.renew:
                 if cert.days_before_expiry <= cert.remaining_days:
-                    cert.renew()
-                    cert.reload_service()
+                    rc = cert.renew()
+                    if rc:
+                        cert.reload_service()
