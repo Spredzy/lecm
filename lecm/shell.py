@@ -25,7 +25,11 @@ import os
 def main():
 
     options = parser.parse()
-    logging.basicConfig(level=logging.INFO)
+
+    if options.debug:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     _CONF = {}
     if options.conf:

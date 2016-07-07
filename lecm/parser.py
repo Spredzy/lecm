@@ -22,6 +22,7 @@ def parse():
     parser = argparse.ArgumentParser(description='Let''s Encrypt Certificate Manager')
 
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
+    parser.add_argument('--debug', action='store_true', help='Display DEBUG information level')
 
     parser.add_argument('--conf', help='Path to configuration file')
     parser.add_argument('-l', '--list', action='store_true',
