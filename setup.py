@@ -34,7 +34,7 @@ def _get_requirements():
 
 def _get_readme():
     readme_path = '%s/%s' % (os.path.dirname(os.path.abspath(__file__)),
-                             'README.md')
+                             'README.rst')
 
     with codecs.open(readme_path, 'r', encoding='utf8') as f:
         return f.read()
