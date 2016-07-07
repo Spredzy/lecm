@@ -205,21 +205,29 @@ class Certificate(object):
        LOG.info('[%s] Retrieving certificate from Let''s Encrypt Server' % self.name)
        command = 'acme-tiny --account-key %s/private/%s --csr %s/csr/%s.csr --acme-dir %s/challenges/%s' % (self.path, self.account_key_name, self.path, self.name, self.path, self.name)
 
-       cert_file_f = open('%s/certs/%s.crt' % (self.path, self.name), 'w')
+       cert_file_f = open('%s/certs/%s.crt.new' % (self.path, self.name), 'w')
 
 
        FNULL = open(os.devnull, 'w')
-       p = subprocess.Popen(command.split(), stdout=cert_file_f, stderr=FNULL)
-       p.wait()
-       LOG.debug('[%s] Writting certificate: %s/certs/%s.crt' % (self.name, self.path, self.name))
+       p = subprocess.Popen(command.split(), stdout=cert_file_f, stderr=subprocess.PIPE)
+       out, err = p.communicate()
 
-       LOG.debug('[%s] Concatenating certificate with intermediate pem: %s/pem/%s.pem' % (self.name, self.path, self.name))
-       filenames = ['%s/certs/%s.crt' % (self.path, self.name),
-                    '%s/pem/%s' % (self.path, os.path.basename(_INTERMEDIATE_CERTIFICATE_URL))]
-       with open('%s/pem/%s.pem' % (self.path, self.name), 'w') as outfile:
-           for fname in filenames:
-               with open(fname) as infile:
-                   outfile.write(infile.read())
+       if p.returncode != 0:
+           LOG.error('[%s] %s' % (self.name, err))
+           os.remove('%s/certs/%s.crt.new' % (self.path, self.name))
+           return False
+       else:
+           LOG.debug('[%s] Writting certificate: %s/certs/%s.crt' % (self.name, self.path, self.name))
+           os.rename('%s/certs/%s.crt.new' % (self.path, self.name), '%s/certs/%s.crt' % (self.path, self.name))
+
+           LOG.debug('[%s] Concatenating certificate with intermediate pem: %s/pem/%s.pem' % (self.name, self.path, self.name))
+           filenames = ['%s/certs/%s.crt' % (self.path, self.name),
+                        '%s/pem/%s' % (self.path, os.path.basename(_INTERMEDIATE_CERTIFICATE_URL))]
+           with open('%s/pem/%s.pem' % (self.path, self.name), 'w') as outfile:
+               for fname in filenames:
+                   with open(fname) as infile:
+                       outfile.write(infile.read())
+       return True
 
 
     def get_days_before_expiry(self):
