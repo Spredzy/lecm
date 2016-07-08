@@ -131,12 +131,6 @@ class Certificate(object):
             os.write(accountkey_file,
                      crypto.dump_privatekey(crypto.FILETYPE_PEM, account_key))
             os.close(accountkey_file)
-
-            accountkey_file = open('%s/private/%s' %
-                                   (self.path, self.account_key_name), 'w')
-            accountkey_file.write(crypto.dump_privatekey(crypto.FILETYPE_PEM,
-                                                         account_key))
-            accountkey_file.close()
         except IOError:
             try:
                 os.remove('%s/private/%s.key' %
