@@ -15,6 +15,7 @@
 
 from lecm import certificate
 from lecm import configuration
+from lecm import lists
 from lecm import parser
 from lecm import utils
 
@@ -40,60 +41,29 @@ def main():
     certificates = utils.filter_certificates(options.items, certificates)
 
     if options.list:
-        result = [['Item', []],
-                  ['Status', []],
-                  ['subjectAltName', []],
-                  ['Location', []],
-                  ['Days', []]]
-        for name, parameters in certificates.iteritems():
-            cert = certificate.Certificate(parameters)
-
-            result[0][1].append(cert.name)
-            if os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
-                result[1][1].append('Generated')
-            else:
-                result[1][1].append('Not-Generated')
-            result[2][1].append(cert.subjectAltName)
-            result[3][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
-            result[4][1].append(cert.days_before_expiry)
-
-        utils.output_informations(result)
+        lists.list(certificates)
     elif options.list_details:
-        result = [['Item', []],
-                  ['Status', []],
-                  ['subjectAltName', []],
-                  ['emailAddress', []],
-                  ['Location', []],
-                  ['Type', []],
-                  ['Size', []],
-                  ['Digest', []],
-                  ['Days', []]]
-        for name, parameters in certificates.iteritems():
-            cert = certificate.Certificate(parameters)
-
-            result[0][1].append(cert.name)
-            if os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
-                result[1][1].append('Generated')
-            else:
-                result[1][1].append('Not-Generated')
-            result[2][1].append(cert.subjectAltName)
-            result[3][1].append(cert.subject['emailAddress'])
-            result[4][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
-            result[5][1].append(cert.type)
-            result[6][1].append(cert.size)
-            result[7][1].append(cert.digest)
-            result[8][1].append(cert.days_before_expiry)
-
-        utils.output_informations(result)
+        lists.list_details(certificates)
     else:
+        noop_holder = {}
         for name, parameters in certificates.iteritems():
             cert = certificate.Certificate(parameters)
             if options.generate:
-                if not os.path.exists('%s/pem/%s.pem' %
-                                      (cert.path, cert.name)):
-                    cert.generate()
-                    cert.reload_service()
+                if options.noop:
+                    if not os.path.exists('%s/pem/%s.pem' %
+                                          (cert.path, cert.name)):
+                        noop_holder[name] = parameters
+                else:
+                    if not os.path.exists('%s/pem/%s.pem' %
+                                          (cert.path, cert.name)):
+                        cert.generate()
+                        cert.reload_service()
             elif options.renew:
-                if cert.days_before_expiry <= cert.remaining_days:
-                    cert.renew()
-                    cert.reload_service()
+                if options.noop:
+                    if cert.days_before_expiry <= cert.remaining_days:
+                        noop_holder[name] = parameters
+                else:
+                    if cert.days_before_expiry <= cert.remaining_days:
+                        cert.renew()
+                        cert.reload_service()
+        lists.list(noop_holder)
