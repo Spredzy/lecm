@@ -30,6 +30,8 @@ def parse():
                         help='Display DEBUG information level')
 
     parser.add_argument('--conf', help='Path to configuration file')
+    parser.add_argument('--items', action='append', nargs='*',
+                        help='Limit the item to apply the action to')
     parser.add_argument('-l', '--list', action='store_true',
                         help='List the lecm configured certificates')
     parser.add_argument('-ld', '--list-details', action='store_true',
@@ -40,5 +42,32 @@ def parse():
     parser.add_argument('--renew', action='store_true',
                         help='Renew already generated SSL Certificates')
     options = parser.parse_args()
+    normalize_items_parameter(options)
 
     return options
+
+
+def normalize_items_parameter(options):
+    """The items parameters can have differents form based on how it
+       was passed as an input
+
+       lecm --generate --items my.example.com,my2.example.com
+       lecm --generate --items my.example.com my2.example.com
+       lecm --generate --items my.example.com --items my2.example.com
+
+       This method aims to provide a plain array witch each element being
+       a items itself
+    """
+
+    if not isinstance(options.items, list):
+        return
+
+    final_items = []
+    for items in options.items:
+        for item in items:
+            if ',' in item:
+                final_items += item.split(',')
+            else:
+                final_items.append(item)
+
+    options.items = final_items
