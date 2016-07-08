@@ -66,4 +66,5 @@ def main():
                     if cert.days_before_expiry <= cert.remaining_days:
                         cert.renew()
                         cert.reload_service()
-        lists.list(noop_holder)
+        if options.noop:
+            lists.list(noop_holder)

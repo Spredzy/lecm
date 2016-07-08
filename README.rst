@@ -132,7 +132,7 @@ Configuration file example
   service_name: httpd
   remaining_days: 10
   emailAddress: admin@example.com
-  accounty_key_name: myhost.key
+  account_key_name: myhost.key
 
   certificates:
     my.example.com:
