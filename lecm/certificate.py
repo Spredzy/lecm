@@ -124,6 +124,14 @@ class Certificate(object):
         try:
             LOG.debug('[global] Writting account key: %s/private/%s' %
                       (self.path, self.account_key_name))
+            accountkey_file = os.open('%s/private/%s' %
+                                      (self.path, self.account_key_name),
+                                      os.O_WRONLY | os.O_CREAT | os.O_TRUNC,
+                                      0o600)
+            os.write(accountkey_file,
+                     crypto.dump_privatekey(crypto.FILETYPE_PEM, account_key))
+            os.close(accountkey_file)
+
             accountkey_file = open('%s/private/%s' %
                                    (self.path, self.account_key_name), 'w')
             accountkey_file.write(crypto.dump_privatekey(crypto.FILETYPE_PEM,
@@ -155,11 +163,13 @@ class Certificate(object):
         try:
             LOG.debug('[%s] Writting private key: %s/private/%s.key' %
                       (self.name, self.path, self.name))
-            privatekey_file = open('%s/private/%s.key' %
-                                   (self.path, self.name), 'w')
-            privatekey_file.write(crypto.dump_privatekey(crypto.FILETYPE_PEM,
-                                                         private_key))
-            privatekey_file.close()
+            privatekey_file = os.open('%s/private/%s.key' %
+                                      (self.path, self.name),
+                                      os.O_WRONLY | os.O_CREAT | os.O_TRUNC,
+                                      0o600)
+            os.write(privatekey_file,
+                     crypto.dump_privatekey(crypto.FILETYPE_PEM, private_key))
+            os.close(privatekey_file)
         except IOError:
             try:
                 os.remove('%s/private/%s.key' % (self.path, self.name))
