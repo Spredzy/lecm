@@ -29,6 +29,8 @@ def parse():
     parser.add_argument('--debug', action='store_true',
                         help='Display DEBUG information level')
 
+    parser.add_argument('--noop', action='store_true',
+                        help='Proceed in noop mode')
     parser.add_argument('--conf', help='Path to configuration file')
     parser.add_argument('--items', action='append', nargs='*',
                         help='Limit the item to apply the action to')
