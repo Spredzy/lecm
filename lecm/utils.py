@@ -22,3 +22,13 @@ def output_informations(data):
     for column in data:
         x.add_column(column[0], column[1])
     print(x)
+
+
+def filter_certificates(items, certificates):
+
+    if isinstance(items, list):
+        for name in certificates.keys():
+            if name not in items:
+                del certificates[name]
+
+    return certificates

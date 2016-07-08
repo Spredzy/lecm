@@ -37,6 +37,7 @@ def main():
 
     global_configuration = configuration.load_configuration(_CONF)
     certificates = configuration.expand_configuration(global_configuration)
+    certificates = utils.filter_certificates(options.items, certificates)
 
     if options.list:
         result = [['Item', []],
