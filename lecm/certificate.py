@@ -284,25 +284,6 @@ class Certificate(object):
             self._create_certificate()
 
     def renew(self):
-        try:
-            LOG.debug('[%s] Removing exising CSR: %s/csr/%s.csr' %
-                      (self.name, self.path, self.name))
-            os.remove('%s/csr/%s.csr' % (self.path, self.name))
-        except OSError:
-            pass
-        try:
-            LOG.debug('[%s] Removing exising PEM file: %s/pem/%s.pem' %
-                      (self.name, self.path, self.name))
-            os.remove('%s/pem/%s.pem' % (self.path, self.name))
-        except OSError:
-            pass
-        try:
-            LOG.debug('[%s] Removing exising cert file: %s/certs/%s.crt' %
-                      (self.name, self.path, self.name))
-            os.remove('%s/certs/%s.crt' % (self.path, self.name))
-        except OSError:
-            pass
-
         self._create_csr()
         self._create_certificate()
 
