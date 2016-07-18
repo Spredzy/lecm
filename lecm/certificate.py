@@ -311,4 +311,5 @@ class Certificate(object):
             LOG.info('[%s] Reloading service specified: %s' %
                      (self.name, self.service_name))
             command = 'systemctl reload %s' % self.service_name
-            subprocess.Popen(command.split())
+            p = subprocess.Popen(command.split())
+            p.wait()
