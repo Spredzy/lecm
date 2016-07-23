@@ -32,7 +32,7 @@ class Certificate(object):
     def __init__(self, conf):
         self.name = conf.get('name')
         self.path = conf.get('path')
-        self.type = conf.get('type')
+        self.type = conf.get('type', 'RSA')
         self.size = conf.get('size', 4096)
         self.digest = conf.get('digest', 'sha256')
         self.version = conf.get('version', 3)
@@ -40,7 +40,7 @@ class Certificate(object):
         self.account_key_name = conf.get('account_key_name')
         self.remaining_days = conf.get('remaining_days', 10)
         self.days_before_expiry = self.get_days_before_expiry()
-        self.service_name = conf.get('service_name')
+        self.service_name = conf.get('service_name', 'httpd')
 
         self.subject = {
           'C': conf.get('countryName'),

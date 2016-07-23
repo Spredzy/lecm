@@ -114,7 +114,7 @@ Every parameters are either applicable globally or within the scope of a certifi
 +------------------------+----------------+---------+-------------------------------------------------------------------------------+
 | remaining_days         | global, backup | 10      | Number of days of validity below which the SSL Certificate should be renewed  |
 +------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| service_name           | global, backup | None    | Service that needs to be reloaded for the change to be taken in consideration |
+| service_name           | global, backup | httpd   | Service that needs to be reloaded for the change to be taken in consideration |
 +------------------------+----------------+---------+-------------------------------------------------------------------------------+
 
 
