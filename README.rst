@@ -116,6 +116,8 @@ Every parameters are either applicable globally or within the scope of a certifi
 +------------------------+----------------+---------+-------------------------------------------------------------------------------+
 | service_name           | global, backup | httpd   | Service that needs to be reloaded for the change to be taken in consideration |
 +------------------------+----------------+---------+-------------------------------------------------------------------------------+
+| service_provider       | global, backup | systemd | Service management system (Possible: systemd, sysv)                           |
++------------------------+----------------+---------+-------------------------------------------------------------------------------+
 
 
 Configuration file example
