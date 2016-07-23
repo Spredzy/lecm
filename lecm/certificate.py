@@ -41,6 +41,7 @@ class Certificate(object):
         self.remaining_days = conf.get('remaining_days', 10)
         self.days_before_expiry = self.get_days_before_expiry()
         self.service_name = conf.get('service_name', 'httpd')
+        self.service_provider = conf.get('service_provider', 'systemd')
 
         self.subject = {
           'C': conf.get('countryName'),
@@ -291,6 +292,9 @@ class Certificate(object):
         if self.service_name:
             LOG.info('[%s] Reloading service specified: %s' %
                      (self.name, self.service_name))
-            command = 'systemctl reload %s' % self.service_name
+            if self.service_provider == 'sysv':
+                command = 'service %s reload' % self.service_name
+            else:
+                command = 'systemctl reload %s' % self.service_name
             p = subprocess.Popen(command.split())
             p.wait()
