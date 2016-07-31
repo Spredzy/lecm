@@ -2,7 +2,7 @@
 lecm: Let's Encrypt Certificates Manager
 ========================================
 
-|buildstatus|_ |release|_
+|buildstatus|_ |release|_ |versions|_
 
 
 `Let's Encrypt`_ Certificates Manager (lecm) is an
@@ -181,6 +181,9 @@ nginx
 
 .. |release| image:: https://img.shields.io/pypi/v/lecm.svg
 .. _release: https://pypi.python.org/pypi/lecm
+
+.. |versions| image:: https://img.shields.io/pypi/pyversions/lecm.svg
+.. _versions: https://pypi.python.org/pypi/lecm
 
 .. _Let's Encrypt: https://letsencrypt.org/
 

@@ -188,8 +188,15 @@ class Certificate(object):
 
         LOG.info('[%s] Attaching SAN extention: %s' %
                  (self.name, self.subjectAltName))
-        req.add_extensions([crypto.X509Extension('subjectAltName', False,
-                                                 self.subjectAltName)])
+
+        try:
+            req.add_extensions([crypto.X509Extension(
+                bytes('subjectAltName', 'utf-8'), False,
+                bytes(self.subjectAltName, 'utf-8')
+            )])
+        except TypeError:
+            req.add_extensions([crypto.X509Extension('subjectAltName', False,
+                                                     self.subjectAltName)])
 
         LOG.debug('[%s] Loading private key: %s/private/%s.key' %
                   (self.name, self.path, self.name))
@@ -206,8 +213,8 @@ class Certificate(object):
         LOG.debug('[%s] Writting CSR: %s/csr/%s.csr' %
                   (self.name, self.path, self.name))
         csr_file = open('%s/csr/%s.csr' % (self.path, self.name), 'w')
-        csr_file.write(crypto.dump_certificate_request(crypto.FILETYPE_PEM,
-                                                       req))
+        csr_file.write((crypto.dump_certificate_request(crypto.FILETYPE_PEM,
+                                                        req)).decode('utf-8'))
         csr_file.close()
 
     def _create_certificate(self):
@@ -255,8 +262,10 @@ class Certificate(object):
         x509 = crypto.load_certificate(crypto.FILETYPE_PEM, x509_content)
 
         notAfter = x509.get_notAfter()[:-1]
-        notAfter_datetime = datetime.datetime.strptime(notAfter,
-                                                       '%Y%m%d%H%M%S')
+        notAfter_datetime = datetime.datetime.strptime(
+            notAfter.decode('utf-8'),
+            '%Y%m%d%H%M%S'
+        )
         now_datetime = datetime.datetime.now()
 
         return (notAfter_datetime - now_datetime).days

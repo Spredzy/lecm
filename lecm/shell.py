@@ -46,7 +46,7 @@ def main():
         lists.list_details(certificates)
     else:
         noop_holder = {}
-        for name, parameters in certificates.iteritems():
+        for name, parameters in certificates.items():
             cert = certificate.Certificate(parameters)
             if options.generate:
                 if options.noop:
@@ -68,3 +68,7 @@ def main():
                         cert.reload_service()
         if options.noop:
             lists.list(noop_holder)
+
+
+if __name__ == "__main__":
+    main()

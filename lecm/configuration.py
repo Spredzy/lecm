@@ -79,7 +79,7 @@ def expand_configuration(configuration):
     """Fill up certificates with defaults."""
 
     certificates = {}
-    for name, parameters in configuration['certificates'].iteritems():
+    for name, parameters in configuration['certificates'].items():
         if not isinstance(parameters, dict):
             parameters = {}
         parameters['name'] = name
