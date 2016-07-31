@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
+
 from prettytable import PrettyTable
 
 
@@ -26,9 +28,10 @@ def output_informations(data):
 
 def filter_certificates(items, certificates):
 
+    certificates_to_return = copy.deepcopy(certificates)
     if isinstance(items, list):
         for name in certificates.keys():
             if name not in items:
-                del certificates[name]
+                del certificates_to_return[name]
 
-    return certificates
+    return certificates_to_return

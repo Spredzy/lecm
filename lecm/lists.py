@@ -25,7 +25,7 @@ def list(certificates):
               ['subjectAltName', []],
               ['Location', []],
               ['Days', []]]
-    for name, parameters in certificates.iteritems():
+    for name, parameters in certificates.items():
         cert = certificate.Certificate(parameters)
 
         result[0][1].append(cert.name)
@@ -50,7 +50,7 @@ def list_details(certificates):
               ['Size', []],
               ['Digest', []],
               ['Days', []]]
-    for name, parameters in certificates.iteritems():
+    for name, parameters in certificates.items():
         cert = certificate.Certificate(parameters)
 
         result[0][1].append(cert.name)
