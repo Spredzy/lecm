@@ -1,9 +1,19 @@
 # Change Log
 
-## [0.0.3](https://github.com/Spredzy/lecm/tree/0.0.3) (2016-07-23)
+## [0.0.4](https://github.com/Spredzy/lecm/tree/0.0.4) (2016-08-01)
+[Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.3...0.0.4)
 
 **Merged pull requests:**
 
+- 0.0.4: Release [\#18](https://github.com/Spredzy/lecm/pull/18) ([Spredzy](https://github.com/Spredzy))
+- Python3: Make lecm works on Python3 [\#17](https://github.com/Spredzy/lecm/pull/17) ([Spredzy](https://github.com/Spredzy))
+
+## [0.0.3](https://github.com/Spredzy/lecm/tree/0.0.3) (2016-07-23)
+[Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.2...0.0.3)
+
+**Merged pull requests:**
+
+- 0.0.3: Release [\#16](https://github.com/Spredzy/lecm/pull/16) ([Spredzy](https://github.com/Spredzy))
 - Add support for platforms using sysv [\#15](https://github.com/Spredzy/lecm/pull/15) ([Spredzy](https://github.com/Spredzy))
 - Certificate: Fix missing defaults \(type, service\_name\) [\#14](https://github.com/Spredzy/lecm/pull/14) ([Spredzy](https://github.com/Spredzy))
 - Do not clean filesystem before requesting certs [\#13](https://github.com/Spredzy/lecm/pull/13) ([Spredzy](https://github.com/Spredzy))
