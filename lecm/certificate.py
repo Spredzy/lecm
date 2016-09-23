@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from lecm import utils
 from OpenSSL import crypto
 
 import datetime
@@ -97,6 +98,7 @@ class Certificate(object):
                       (self.path, folder))
             if not os.path.exists('%s/%s' % (self.path, folder)):
                 os.makedirs('%s/%s' % (self.path, folder))
+                utils.enforce_selinux_context(self.path)
 
     def _get_intermediate_certificate(self):
         certificate = requests.get(_INTERMEDIATE_CERTIFICATE_URL).text

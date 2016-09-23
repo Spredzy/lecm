@@ -14,8 +14,14 @@
 # limitations under the License.
 
 import copy
+import logging
+import os
+import platform
+import subprocess
 
 from prettytable import PrettyTable
+
+LOG = logging.getLogger(__name__)
 
 
 def output_informations(data):
@@ -35,3 +41,24 @@ def filter_certificates(items, certificates):
                 del certificates_to_return[name]
 
     return certificates_to_return
+
+
+def enforce_selinux_context(output_directory):
+
+    if platform.dist()[0] in ['fedora', 'centos', 'redhat']:
+        if os.path.exists('/sbin/semanage'):
+            FNULL = open(os.devnull, 'w')
+
+            # Set new selinux so it is persistent over reboot
+            command = 'semanage fcontext -a -t cert_t %s(/.*?)' % (
+                output_directory
+            )
+            p = subprocess.Popen(command.split(), stdout=FNULL,
+                                 stderr=subprocess.STDOUT)
+            p.wait()
+
+            # Ensure file have the right context applied
+            command = 'restorecon -Rv %s' % output_directory
+            p = subprocess.Popen(command.split(), stdout=FNULL,
+                                 stderr=subprocess.STDOUT)
+            p.wait()
