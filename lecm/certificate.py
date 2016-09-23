@@ -19,6 +19,7 @@ import datetime
 import logging
 import os
 import requests
+import socket
 import subprocess
 
 LOG = logging.getLogger(__name__)
@@ -37,7 +38,8 @@ class Certificate(object):
         self.digest = conf.get('digest', 'sha256')
         self.version = conf.get('version', 3)
         self.subjectAltName = self.normalize_san(conf.get('subjectAltName'))
-        self.account_key_name = conf.get('account_key_name')
+        self.account_key_name = conf.get('account_key_name',
+                                         'account_%s.key' % socket.getfqdn())
         self.remaining_days = conf.get('remaining_days', 10)
         self.days_before_expiry = self.get_days_before_expiry()
         self.service_name = conf.get('service_name', 'httpd')
