@@ -81,43 +81,43 @@ Configuration
 
 Every parameters are either applicable globally or within the scope of a certificate. The finest specification wins.
 
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| Parameter              | Scope          | Default | Description                                                                   |
-+========================+================+=========+===============================================================================+
-| path                   | global, backup | None    | Foler where will reside all the relevant files                                |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| type                   | global, backup | RSA     | Type of the key to generate (Possible: RSA, DSA)                              |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| size                   | global, backup | 4096    | Size of the key to generate                                                   |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| digest                 | global, backup | sha256  | Digest of the key to generate                                                 |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| version                | global, backup | 3       | Version of the SSL Certificate to generate                                    |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| subjectAltName         | global, backup | None    | subjectAltName value of the Certificate Signing Request (csr)                 |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| countryName            | global, backup | None    | countryName value of the Certificate Signing Request (csr)                    |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| stateOrProvinceName    | global, backup | None    | stateOrProvinceName value of the Certificate Signing Request (csr)            |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| localityName           | global, backup | None    | localityName value of the Certificate Signing Request (csr)                   |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| organizationName       | global, backup | None    | organizationName value of the Certificate Signing Request (csr)               |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| organizationalUnitName | global, backup | None    | organizationalUnitName value of the Certificate Signing Request (csr)         |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| commonName             | global, backup | None    | commonName value of the Certificate Signing Request (csr)                     |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| emailAddress           | global, backup | None    | emailAddress value of the Certificate Signing Request (csr)                   |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| account_key_name       | global, backup | None    | Name of the account key to generate                                           |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| remaining_days         | global, backup | 10      | Number of days of validity below which the SSL Certificate should be renewed  |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| service_name           | global, backup | httpd   | Service that needs to be reloaded for the change to be taken in consideration |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
-| service_provider       | global, backup | systemd | Service management system (Possible: systemd, sysv)                           |
-+------------------------+----------------+---------+-------------------------------------------------------------------------------+
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| Parameter              | Scope          | Default           | Description                                                                   |
++========================+================+===================+===============================================================================+
+| path                   | global, backup | None              | Foler where will reside all the relevant files                                |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| type                   | global, backup | RSA               | Type of the key to generate (Possible: RSA, DSA)                              |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| size                   | global, backup | 4096              | Size of the key to generate                                                   |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| digest                 | global, backup | sha256            | Digest of the key to generate                                                 |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| version                | global, backup | 3                 | Version of the SSL Certificate to generate                                    |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| subjectAltName         | global, backup | None              | subjectAltName value of the Certificate Signing Request (csr)                 |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| countryName            | global, backup | None              | countryName value of the Certificate Signing Request (csr)                    |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| stateOrProvinceName    | global, backup | None              | stateOrProvinceName value of the Certificate Signing Request (csr)            |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| localityName           | global, backup | None              | localityName value of the Certificate Signing Request (csr)                   |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| organizationName       | global, backup | None              | organizationName value of the Certificate Signing Request (csr)               |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| organizationalUnitName | global, backup | None              | organizationalUnitName value of the Certificate Signing Request (csr)         |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| commonName             | global, backup | None              | commonName value of the Certificate Signing Request (csr)                     |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| emailAddress           | global, backup | None              | emailAddress value of the Certificate Signing Request (csr)                   |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| account_key_name       | global, backup | account_$fqdn.key | Name of the account key to generate                                           |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| remaining_days         | global, backup | 10                | Number of days of validity below which the SSL Certificate should be renewed  |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| service_name           | global, backup | httpd             | Service that needs to be reloaded for the change to be taken in consideration |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
+| service_provider       | global, backup | systemd           | Service management system (Possible: systemd, sysv)                           |
++------------------------+----------------+-------------------+-------------------------------------------------------------------------------+
 
 
 Configuration file example
