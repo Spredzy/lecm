@@ -302,12 +302,4 @@ class Certificate(object):
         self._create_certificate()
 
     def reload_service(self):
-        if self.service_name:
-            LOG.info('[%s] Reloading service specified: %s' %
-                     (self.name, self.service_name))
-            if self.service_provider == 'sysv':
-                command = 'service %s reload' % self.service_name
-            else:
-                command = 'systemctl reload %s' % self.service_name
-            p = subprocess.Popen(command.split())
-            p.wait()
+        utils.reload_service(self.service_name, self.service_provider)

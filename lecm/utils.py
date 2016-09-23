@@ -13,13 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from prettytable import PrettyTable
+
 import copy
 import logging
 import os
 import platform
 import subprocess
-
-from prettytable import PrettyTable
 
 LOG = logging.getLogger(__name__)
 
@@ -62,3 +62,15 @@ def enforce_selinux_context(output_directory):
             p = subprocess.Popen(command.split(), stdout=FNULL,
                                  stderr=subprocess.STDOUT)
             p.wait()
+
+
+def reload_service(service_name, service_provider):
+
+    if service_name:
+        LOG.info('Reloading service specified: %s' % service_name)
+        if service_provider == 'sysv':
+            command = 'service %s reload' % service_name
+        else:
+            command = 'systemctl reload %s' % service_name
+        p = subprocess.Popen(command.split())
+        p.wait()

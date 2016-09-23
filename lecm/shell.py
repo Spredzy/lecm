@@ -23,6 +23,20 @@ import logging
 import os
 
 
+def should_reload(item, global_configuration):
+
+    if 'service_name' not in item:
+        return False
+
+    item_service_name = item['service_name']
+    global_service_name = global_configuration['service_name']
+
+    if item_service_name != global_service_name:
+        return True
+
+    return False
+
+
 def main():
 
     options = parser.parse()
@@ -57,7 +71,13 @@ def main():
                     if not os.path.exists('%s/pem/%s.pem' %
                                           (cert.path, cert.name)):
                         cert.generate()
-                        cert.reload_service()
+                        # If the service for a specific certificate is
+                        # different than the 'default' service_name or
+                        # no default is specified then reload the service
+                        # right after certificate generation, else reload
+                        # it just once at the end
+                        if should_reload(parameters, global_configuration):
+                            cert.reload_service()
             elif options.renew:
                 if options.noop:
                     if cert.days_before_expiry <= cert.remaining_days:
@@ -65,7 +85,19 @@ def main():
                 else:
                     if cert.days_before_expiry <= cert.remaining_days:
                         cert.renew()
-                        cert.reload_service()
+                        # If the service for a specific certificate is
+                        # different than the 'default' service_name or
+                        # no default is specified then reload the service
+                        # right after certificate generation, else reload
+                        # it just once at the end
+                        if should_reload(parameters, global_configuration):
+                            cert.reload_service()
+
+        if 'service_name' in global_configuration:
+            utils.reload_service(
+                global_configuration['service_name'],
+                global_configuration.get('service_provider', 'systemd')
+            )
         if options.noop:
             lists.list(noop_holder)
 
