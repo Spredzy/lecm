@@ -40,6 +40,7 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
+    _CHANGE = False
     _CONF = {}
     if options.conf:
         _CONF['file_path'] = options.conf
@@ -65,6 +66,7 @@ def main():
                     if not os.path.exists('%s/pem/%s.pem' %
                                           (cert.path, cert.name)):
                         cert.generate()
+                        _CHANGE = True
                         # If the service for a specific certificate is
                         # different than the 'default' service_name or
                         # no default is specified then reload the service
@@ -79,6 +81,7 @@ def main():
                 else:
                     if cert.days_before_expiry <= cert.remaining_days:
                         cert.renew()
+                        _CHANGE = True
                         # If the service for a specific certificate is
                         # different than the 'default' service_name or
                         # no default is specified then reload the service
@@ -87,10 +90,11 @@ def main():
                         if should_reload(cert, global_configuration):
                             cert.reload_service()
 
-        utils.reload_service(
-            global_configuration.get('service_name', 'httpd'),
-            global_configuration.get('service_provider', 'systemd')
-        )
+        if not options.noop and _CHANGE:
+            utils.reload_service(
+                global_configuration.get('service_name', 'httpd'),
+                global_configuration.get('service_provider', 'systemd')
+            )
         if options.noop:
             lists.list(noop_holder)
 
