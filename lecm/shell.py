@@ -23,15 +23,9 @@ import logging
 import os
 
 
-def should_reload(item, global_configuration):
+def should_reload(cert, global_configuration):
 
-    if 'service_name' not in item:
-        return False
-
-    item_service_name = item['service_name']
-    global_service_name = global_configuration['service_name']
-
-    if item_service_name != global_service_name:
+    if cert.service_name != global_configuration.get('service_name', 'httpd'):
         return True
 
     return False
@@ -76,7 +70,7 @@ def main():
                         # no default is specified then reload the service
                         # right after certificate generation, else reload
                         # it just once at the end
-                        if should_reload(parameters, global_configuration):
+                        if should_reload(cert, global_configuration):
                             cert.reload_service()
             elif options.renew:
                 if options.noop:
@@ -90,14 +84,13 @@ def main():
                         # no default is specified then reload the service
                         # right after certificate generation, else reload
                         # it just once at the end
-                        if should_reload(parameters, global_configuration):
+                        if should_reload(cert, global_configuration):
                             cert.reload_service()
 
-        if 'service_name' in global_configuration:
-            utils.reload_service(
-                global_configuration['service_name'],
-                global_configuration.get('service_provider', 'systemd')
-            )
+        utils.reload_service(
+            global_configuration.get('service_name', 'httpd'),
+            global_configuration.get('service_provider', 'systemd')
+        )
         if options.noop:
             lists.list(noop_holder)
 
