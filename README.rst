@@ -127,14 +127,6 @@ Configuration file example
 
   ---
   path: /etc/letsencrypt
-  type: RSA
-  size: 4096
-  digest: sha256
-  version: 3
-  service_name: httpd
-  remaining_days: 10
-  emailAddress: admin@example.com
-  account_key_name: myhost.key
 
   certificates:
     my.example.com:
@@ -143,10 +135,8 @@ Configuration file example
         - app.example.com
         - app1.example.com
         - app2.example.com
-      emailAddress: app-admin@example.com
-      size: 2048
-      service_name: nginx
 
+More example can be found in the ``sample/`` directory.
 
 Httpd and Nginx
 ---------------
