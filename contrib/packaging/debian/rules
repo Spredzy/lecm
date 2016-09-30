@@ -3,4 +3,4 @@
 export PYBUILD_NAME=lecm
 
 %:
-	dh $@ --buildsystem=pybuild --with python2,python3
+	dh $@ --buildsystem=pybuild --with python3
