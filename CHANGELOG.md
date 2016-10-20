@@ -1,5 +1,31 @@
 # Change Log
 
+## [0.0.5](https://github.com/Spredzy/lecm/tree/0.0.5) (2016-10-27)
+[Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.4...0.0.5)
+
+**Implemented enhancements:**
+
+- doc: Added a manpage for lecm packages \(can be generated with pandoc\) [\#34](https://github.com/Spredzy/lecm/pull/34) ([sbadia](https://github.com/sbadia))
+- packaging/debian: Move packaging, to Debian: https://anonscm.debian.org/git/letsencrypt//python-lecm.git [\#33](https://github.com/Spredzy/lecm/pull/33) ([sbadia](https://github.com/sbadia))
+- Deb packaging [\#31](https://github.com/Spredzy/lecm/pull/31) ([sbadia](https://github.com/sbadia))
+
+**Closed issues:**
+
+- lecm should add the cert\_t SELinux context to the output\_directory [\#22](https://github.com/Spredzy/lecm/issues/22)
+- Do not restart http server on every certificate if many certificates are involved [\#20](https://github.com/Spredzy/lecm/issues/20)
+- Create a default value for account\_key name [\#19](https://github.com/Spredzy/lecm/issues/19)
+
+**Merged pull requests:**
+
+- Packaging: Introduce spec file [\#30](https://github.com/Spredzy/lecm/pull/30) ([Spredzy](https://github.com/Spredzy))
+- Service: reload only when an action had been taken [\#29](https://github.com/Spredzy/lecm/pull/29) ([Spredzy](https://github.com/Spredzy))
+- Sample: Add more sample as a base example [\#28](https://github.com/Spredzy/lecm/pull/28) ([Spredzy](https://github.com/Spredzy))
+- Service reload: Rely on certificate object rather than configuration [\#27](https://github.com/Spredzy/lecm/pull/27) ([Spredzy](https://github.com/Spredzy))
+- README: Fix left over backup string from a copy/paste [\#26](https://github.com/Spredzy/lecm/pull/26) ([Spredzy](https://github.com/Spredzy))
+- SELinux: Enforce proper context for generated directories [\#25](https://github.com/Spredzy/lecm/pull/25) ([Spredzy](https://github.com/Spredzy))
+- Run the reload command only when necessary [\#24](https://github.com/Spredzy/lecm/pull/24) ([Spredzy](https://github.com/Spredzy))
+- Certificate: create a default value for account\_key\_name variable [\#23](https://github.com/Spredzy/lecm/pull/23) ([Spredzy](https://github.com/Spredzy))
+
 ## [0.0.4](https://github.com/Spredzy/lecm/tree/0.0.4) (2016-08-01)
 [Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.3...0.0.4)
 
