@@ -1,6 +1,0 @@
-#!/usr/bin/make -f
-
-export PYBUILD_NAME=lecm
-
-%:
-	dh $@ --buildsystem=pybuild --with python3
