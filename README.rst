@@ -161,7 +161,7 @@ nginx
 .. code-block::
 
   location /.well-known/acme-challenge/ {
-    alias /etc/letsencrypt/challenges/my.example.com;
+    alias /etc/letsencrypt/challenges/my.example.com/;
     try_files $uri =404;
   }
 
