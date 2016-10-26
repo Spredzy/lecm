@@ -84,7 +84,7 @@ Every parameters are either applicable globally or within the scope of a certifi
 +------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
 | Parameter              | Scope               | Default           | Description                                                                   |
 +========================+=====================+===================+===============================================================================+
-| path                   | global, certificate | None              | Foler where will reside all the relevant files                                |
+| path                   | global, certificate | None              | Folder where will reside all the relevant files                               |
 +------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
 | type                   | global, certificate | RSA               | Type of the key to generate (Possible: RSA, DSA)                              |
 +------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
