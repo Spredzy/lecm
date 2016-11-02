@@ -33,7 +33,7 @@ Debian-based distro (Debian, Ubuntu, …)
 
 There is an `official Debian package for lecm`_
 
-``$ sudo apt install lecm``
+``$ sudo apt-get install lecm``
 
 How to run it
 -------------
