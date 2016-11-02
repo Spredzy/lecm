@@ -18,6 +18,22 @@ The goal of ``lecm`` is to be able to generate and renew
 ``lecm`` is configuration driven. Each certificate that needs to be managed
 is described in the configuration file.
 
+Installation
+------------
+
+Using pypi
+^^^^^^^^^^
+
+You just need to
+
+``$ pip install lecm``
+
+Debian-based distro (Debian, Ubuntu, …)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There is an `official Debian package for lecm`_
+
+``$ sudo apt install lecm``
 
 How to run it
 -------------
@@ -176,4 +192,4 @@ nginx
 .. _versions: https://pypi.python.org/pypi/lecm
 
 .. _Let's Encrypt: https://letsencrypt.org/
-
+.. _official Debian package for lecm: https://tracker.debian.org/pkg/lecm
