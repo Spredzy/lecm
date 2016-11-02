@@ -67,10 +67,14 @@ def enforce_selinux_context(output_directory):
 def reload_service(service_name, service_provider):
 
     if service_name:
-        LOG.info('Reloading service specified: %s' % service_name)
-        if service_provider == 'sysv':
-            command = 'service %s reload' % service_name
-        else:
-            command = 'systemctl reload %s' % service_name
-        p = subprocess.Popen(command.split())
-        p.wait()
+        if not isinstance(service_name, list):
+            service_name = [service_name]
+
+        for service in service_name:
+            LOG.info('Reloading service specified: %s' % service)
+            if service_provider == 'sysv':
+                command = 'service %s reload' % service
+            else:
+                command = 'systemctl reload %s' % service
+            p = subprocess.Popen(command.split())
+            p.wait()
