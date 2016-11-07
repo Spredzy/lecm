@@ -84,12 +84,12 @@ if its expiry date is lower than the ``remainin_days`` value.
 
 .. code-block::
 
-  +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+-----------------------------------------------------------+------+------+--------+------+
-  |               Item               |     Status    |                          subjectAltName                          |        emailAddress       |                          Location                         | Type | Size | Digest | Days |
-  +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+-----------------------------------------------------------+------+------+--------+------+
-  |   lecm-test.distributed-ci.io    |   Generated   |                 DNS:lecm-test.distributed-ci.io                  | distributed-ci@redhat.com |    /etc/letsencrypt/pem/lecm-test.distributed-ci.io.pem   | RSA  | 4096 | sha256 |  89  |
-  | lecm-test-test.distributed-ci.io | Not-Generated | DNS;lecm-test-test.distributed-ci.io,DNS:lecm.distributedi-ci.io | distributed-ci@redhat.com | /etc/letsencrypt/pem/lecm-test-test.distributed-ci.io.pem | RSA  | 2048 | sha256 | N/A  |
-  +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+-----------------------------------------------------------+------+------+--------+------+
+  +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+--------------+-----------------------------------------------------------+------+------+--------+------+
+  |               Item               |     Status    |                          subjectAltName                          |        emailAddress       |  Environment |                          Location                         | Type | Size | Digest | Days |
+  +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+--------------+-----------------------------------------------------------+------+------+--------+------+
+  |   lecm-test.distributed-ci.io    |   Generated   |                 DNS:lecm-test.distributed-ci.io                  | distributed-ci@redhat.com |  production  |    /etc/letsencrypt/pem/lecm-test.distributed-ci.io.pem   | RSA  | 4096 | sha256 |  89  |
+  | lecm-test-test.distributed-ci.io | Not-Generated | DNS;lecm-test-test.distributed-ci.io,DNS:lecm.distributedi-ci.io | distributed-ci@redhat.com |    staging   | /etc/letsencrypt/pem/lecm-test-test.distributed-ci.io.pem | RSA  | 2048 | sha256 | N/A  |
+  +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+--------------|-----------------------------------------------------------+------+------+--------+------+
 
 
 Configuration
@@ -133,6 +133,8 @@ Every parameters are either applicable globally or within the scope of a certifi
 | service_name           | global, certificate | httpd             | Service that needs to be reloaded for the change to be taken in consideration |
 +------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
 | service_provider       | global, certificate | systemd           | Service management system (Possible: systemd, sysv)                           |
++------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| environment            | global, certificate | production        | Let's Encrypt environment to use (Possible: production, staging)              |
 +------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
 
 

@@ -28,6 +28,9 @@ LOG = logging.getLogger(__name__)
 _INTERMEDIATE_CERTIFICATE_URL = \
     'https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem'
 
+_STAGING_URL = \
+    'https://acme-staging.api.letsencrypt.org'
+
 
 class Certificate(object):
 
@@ -38,6 +41,7 @@ class Certificate(object):
         self.size = conf.get('size', 4096)
         self.digest = conf.get('digest', 'sha256')
         self.version = conf.get('version', 3)
+        self.environment = conf.get('environment', 'production')
         self.subjectAltName = self.normalize_san(conf.get('subjectAltName'))
         self.account_key_name = conf.get('account_key_name',
                                          'account_%s.key' % socket.getfqdn())
@@ -229,6 +233,11 @@ class Certificate(object):
                                                   self.account_key_name,
                                                   self.path, self.name,
                                                   self.path, self.name)
+
+        if self.environment == 'staging':
+            LOG.info('[%s] Using Let''s Encrypt staging API: %s' %
+                     (self.name, _STAGING_URL))
+            command = '%s --ca %s' % (command, _STAGING_URL)
 
         cert_file_f = open('%s/certs/%s.crt.new' % (self.path, self.name), 'w')
 

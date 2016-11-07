@@ -45,6 +45,7 @@ def list_details(certificates):
               ['Status', []],
               ['subjectAltName', []],
               ['emailAddress', []],
+              ['Environment', []],
               ['Location', []],
               ['Type', []],
               ['Size', []],
@@ -60,10 +61,11 @@ def list_details(certificates):
             result[1][1].append('Not-Generated')
         result[2][1].append(cert.subjectAltName)
         result[3][1].append(cert.subject['emailAddress'])
-        result[4][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
-        result[5][1].append(cert.type)
-        result[6][1].append(cert.size)
-        result[7][1].append(cert.digest)
-        result[8][1].append(cert.days_before_expiry)
+        result[4][1].append(cert.environment)
+        result[5][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
+        result[6][1].append(cert.type)
+        result[7][1].append(cert.size)
+        result[8][1].append(cert.digest)
+        result[9][1].append(cert.days_before_expiry)
 
     utils.output_informations(result)
