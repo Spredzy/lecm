@@ -50,7 +50,7 @@ setuptools.setup(
                   from configuration file',
     long_description=_get_readme(),
     install_requires=_get_requirements(),
-    url='https://github.com/redhat-cip/lecm',
+    url='https://github.com/Spredzy/lecm',
     license='Apache v2.0',
     include_package_data=True,
     classifiers=[
@@ -61,6 +61,7 @@ setuptools.setup(
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
     entry_points={
         'console_scripts': [
