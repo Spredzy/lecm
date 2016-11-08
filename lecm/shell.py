@@ -21,6 +21,7 @@ from lecm import utils
 
 import logging
 import os
+import sys
 
 
 def should_reload(cert, global_configuration):
@@ -34,6 +35,12 @@ def should_reload(cert, global_configuration):
 def main():
 
     options = parser.parse()
+
+    if isinstance(options, int):
+        sys.stderr.write(
+            'USAGE: lecm [--generate,--renew,--list,--list-details]\n'
+        )
+        return 1
 
     if options.debug:
         logging.basicConfig(level=logging.DEBUG)
