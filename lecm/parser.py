@@ -21,7 +21,8 @@ import argparse
 def parse():
 
     parser = argparse.ArgumentParser(
-        description='Let''s Encrypt Certificate Manager'
+        description='Let''s Encrypt Certificate Manager',
+        epilog='lecm [--generate,--renew,--list,--list-details]'
     )
 
     parser.add_argument('-v', '--version', action='version',
@@ -44,6 +45,10 @@ def parse():
     parser.add_argument('--renew', action='store_true',
                         help='Renew already generated SSL Certificates')
     options = parser.parse_args()
+
+    if len([value for value in vars(options).values() if value]) == 0:
+        return 1
+
     normalize_items_parameter(options)
 
     return options
