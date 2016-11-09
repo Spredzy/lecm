@@ -5,7 +5,7 @@
 %endif
 
 Name:           %{srcname}
-Version:        0.0.5
+Version:        0.0.6
 Release:        1%{?dist}
 
 Summary:        Let's Encrypt Certificate Manager
@@ -77,6 +77,16 @@ and renewal of Let's Encrypt SSL certificates.
 %endif
 
 %changelog
+
+* Wed Nov 09 2016 Yanis Guenane <yguenane@redhat.com> 0.0.6-1
+- doc: Added instal. documentation (pypi/debian) #37
+- Print USAGE message when no parameter has been passed #43
+- certificates: Allow one to use Let's Encrypt staging API #42
+- setup.py: Fix url and add Python 3.5 support #41
+- Travis: Add check for Python 3.5 #39
+- certificates: Allow one to reload multiple service #38
+- Fix mistake in the alias statement #36
+
 * Thu Oct 27 2016 Yanis Guenane <yguenane@redhat.com> 0.0.5-1
 - Deb and Rpm packaging
 - Reload service only when necessary #29

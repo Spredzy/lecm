@@ -1,6 +1,22 @@
 # Change Log
 
-## [0.0.5](https://github.com/Spredzy/lecm/tree/0.0.5) (2016-10-27)
+## [0.0.6](https://github.com/Spredzy/lecm/tree/0.0.6) (2016-11-09)
+[Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.5...0.0.6)
+
+**Implemented enhancements:**
+
+- doc: Added instal. documentation \(pypi/debian\) [\#37](https://github.com/Spredzy/lecm/pull/37) ([sbadia](https://github.com/sbadia))
+
+**Merged pull requests:**
+
+- Print USAGE message when no parameter has been passed [\#43](https://github.com/Spredzy/lecm/pull/43) ([Spredzy](https://github.com/Spredzy))
+- certificates: Allow one to use Let's Encrypt staging API [\#42](https://github.com/Spredzy/lecm/pull/42) ([Spredzy](https://github.com/Spredzy))
+- setup.py: Fix url and add Python 3.5 support [\#41](https://github.com/Spredzy/lecm/pull/41) ([Spredzy](https://github.com/Spredzy))
+- Travis: Add check for Python 3.5 [\#39](https://github.com/Spredzy/lecm/pull/39) ([Spredzy](https://github.com/Spredzy))
+- certificates: Allow one to reload multiple service [\#38](https://github.com/Spredzy/lecm/pull/38) ([Spredzy](https://github.com/Spredzy))
+- Mistake in the alias statement [\#36](https://github.com/Spredzy/lecm/pull/36) ([albatros69](https://github.com/albatros69))
+
+## [0.0.5](https://github.com/Spredzy/lecm/tree/0.0.5) (2016-10-20)
 [Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.4...0.0.5)
 
 **Implemented enhancements:**
@@ -9,14 +25,9 @@
 - packaging/debian: Move packaging, to Debian: https://anonscm.debian.org/git/letsencrypt//python-lecm.git [\#33](https://github.com/Spredzy/lecm/pull/33) ([sbadia](https://github.com/sbadia))
 - Deb packaging [\#31](https://github.com/Spredzy/lecm/pull/31) ([sbadia](https://github.com/sbadia))
 
-**Closed issues:**
-
-- lecm should add the cert\_t SELinux context to the output\_directory [\#22](https://github.com/Spredzy/lecm/issues/22)
-- Do not restart http server on every certificate if many certificates are involved [\#20](https://github.com/Spredzy/lecm/issues/20)
-- Create a default value for account\_key name [\#19](https://github.com/Spredzy/lecm/issues/19)
-
 **Merged pull requests:**
 
+- 0.0.5: Prepare release [\#35](https://github.com/Spredzy/lecm/pull/35) ([Spredzy](https://github.com/Spredzy))
 - Packaging: Introduce spec file [\#30](https://github.com/Spredzy/lecm/pull/30) ([Spredzy](https://github.com/Spredzy))
 - Service: reload only when an action had been taken [\#29](https://github.com/Spredzy/lecm/pull/29) ([Spredzy](https://github.com/Spredzy))
 - Sample: Add more sample as a base example [\#28](https://github.com/Spredzy/lecm/pull/28) ([Spredzy](https://github.com/Spredzy))
