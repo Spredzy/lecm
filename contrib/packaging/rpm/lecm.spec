@@ -1,9 +1,5 @@
 %global srcname lecm
 
-%if 0%{?fedora}
-%global with_python3 1
-%endif
-
 Name:           %{srcname}
 Version:        0.0.6
 Release:        1%{?dist}
@@ -12,69 +8,59 @@ Summary:        Let's Encrypt Certificate Manager
 License:        ASL 2.0
 URL:            http://pypi.python.org/pypi/%{srcname}
 Source0:        http://pypi.python.org/packages/source/l/%{srcname}/%{srcname}-%{version}.tar.gz
+Source1:        lecm.cron
+Source2:        lecm.1.gz
 
 
 BuildArch:      noarch
 
-BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
-
-Requires:       python-prettytable
-Requires:       PyYAML
-Requires:       python-requests
-Requires:       pyOpenSSL
-
-%description
-Let's Encrypt Certificate Manager is an utility to ease the management
-and renewal of Let's Encrypt SSL certificates.
-
-%if 0%{?with_python3}
-%package -n python3-%{srcname}
-Summary:        Let's Encrypt Certificate Manager
-
 BuildRequires:  python3-devel
 
+Requires:       acme-tiny
 Requires:       python3-prettytable
 Requires:       python3-PyYAML
 Requires:       python3-requests
 Requires:       python3-pyOpenSSL
 
-%description -n python3-%{srcname}
+%description
 Let's Encrypt Certificate Manager is an utility to ease the management
 and renewal of Let's Encrypt SSL certificates.
-%endif
 
 
 %prep
 %autosetup -n %{srcname}-%{version}
+# NOTE(spredzy): We need to kee acme-tiny in the requirements in the tarball
+# for user to still be able to use it fully from pip install, but the acme-tiny
+# package does not install a python module but just the independant script. Hence
+# the need for the sed command below.
+sed -i '/acme-tiny/d' requirements.txt
+
 
 %build
-%py2_build
-%if 0%{?with_python3}
 %py3_build
-%endif
 
 
 %install
-%py2_install
-%if 0%{?with_python3}
 %py3_install
-%endif
+
+mkdir -p %{buildroot}%{_sysconfdir}/cron.d/
+install -p -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/cron.d/lecm
+
+mkdir -p %{buildroot}%{_mandir}/man1/
+install -p -m 0644 %{SOURCE2} %{buildroot}%{_mandir}/man1/lecm.1.gz
+
+mkdir -p %{buildroot}%{_datadir}/%{srcname}/sample/
+install -p -m 0644 sample/*.conf %{buildroot}%{_datadir}/%{srcname}/sample/
 
 
 %files
 %doc README.rst
-%{python2_sitelib}/%{srcname}
-%{python2_sitelib}/*.egg-info
-%{_bindir}/lecm
-
-%if 0%{?with_python3}
-%files -n python3-%{srcname}
-%doc README.rst
 %{python3_sitelib}/%{srcname}
 %{python3_sitelib}/*.egg-info
-%{_bindir}/lecm
-%endif
+%{_bindir}/%{srcname}
+%{_datadir}/%{srcname}
+%{_mandir}/man1/%{srcname}.1.gz
+%config(noreplace) %{_sysconfdir}/cron.d/%{srcname}
 
 %changelog
 

@@ -1,7 +1,6 @@
 % LECM(1) Let's Encrypt Manager manual
-% Yanis Guenane
+% Yanis Guenane  <yanis@guenane.org>
 % October 17, 2016
-% pandoc -s -t man lecm.md -o lecm.1
 
 # NAME
 
