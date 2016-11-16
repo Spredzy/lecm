@@ -83,10 +83,12 @@ def main():
                             cert.reload_service()
             elif options.renew:
                 if options.noop:
-                    if cert.days_before_expiry <= cert.remaining_days:
+                    if isinstance(cert.days_before_expiry, int) and \
+                       cert.days_before_expiry <= cert.remaining_days:
                         noop_holder[name] = parameters
                 else:
-                    if cert.days_before_expiry <= cert.remaining_days:
+                    if isinstance(cert.days_before_expiry, int) and \
+                       cert.days_before_expiry <= cert.remaining_days:
                         cert.renew()
                         _CHANGE = True
                         # If the service for a specific certificate is
