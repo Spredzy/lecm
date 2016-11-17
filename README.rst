@@ -69,12 +69,12 @@ if its expiry date is lower than the ``remainin_days`` value.
 
 .. code-block::
 
-  +----------------------------------+---------------+------------------------------------------------------------------+-----------------------------------------------------------+------+
-  |               Item               |     Status    |                          subjectAltName                          |                          Location                         | Days |
-  +----------------------------------+---------------+------------------------------------------------------------------+-----------------------------------------------------------+------+
-  |   lecm-test.distributed-ci.io    |   Generated   |                 DNS:lecm-test.distributed-ci.io                  |    /etc/letsencrypt/pem/lecm-test.distributed-ci.io.pem   |  89  |
-  | lecm-test-test.distributed-ci.io | Not-Generated | DNS;lecm-test-test.distributed-ci.io,DNS:lecm.distributedi-ci.io | /etc/letsencrypt/pem/lecm-test-test.distributed-ci.io.pem | N/A  |
-  +----------------------------------+---------------+------------------------------------------------------------------+-----------------------------------------------------------+------+
+ +--------- +----------------------------------+---------------+------------------------------------------------------------------+-----------------------------------------------------------+------+
+ |  In Sync |               Item               |     Status    |                          subjectAltName                          |                          Location                         | Days |
+ +--------- +----------------------------------+---------------+------------------------------------------------------------------+-----------------------------------------------------------+------+
+ |  True    |   lecm-test.distributed-ci.io    |   Generated   |                 DNS:lecm-test.distributed-ci.io                  |    /etc/letsencrypt/pem/lecm-test.distributed-ci.io.pem   |  89  |
+ |  False   | lecm-test-test.distributed-ci.io | Not-Generated | DNS;lecm-test-test.distributed-ci.io,DNS:lecm.distributedi-ci.io | /etc/letsencrypt/pem/lecm-test-test.distributed-ci.io.pem | N/A  |
+ +----------+----------------------------------+---------------+------------------------------------------------------------------+-----------------------------------------------------------+------+
 
 
 ``--list-details``
@@ -84,12 +84,12 @@ if its expiry date is lower than the ``remainin_days`` value.
 
 .. code-block::
 
-  +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+--------------+-----------------------------------------------------------+------+------+--------+------+
-  |               Item               |     Status    |                          subjectAltName                          |        emailAddress       |  Environment |                          Location                         | Type | Size | Digest | Days |
-  +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+--------------+-----------------------------------------------------------+------+------+--------+------+
-  |   lecm-test.distributed-ci.io    |   Generated   |                 DNS:lecm-test.distributed-ci.io                  | distributed-ci@redhat.com |  production  |    /etc/letsencrypt/pem/lecm-test.distributed-ci.io.pem   | RSA  | 4096 | sha256 |  89  |
-  | lecm-test-test.distributed-ci.io | Not-Generated | DNS;lecm-test-test.distributed-ci.io,DNS:lecm.distributedi-ci.io | distributed-ci@redhat.com |    staging   | /etc/letsencrypt/pem/lecm-test-test.distributed-ci.io.pem | RSA  | 2048 | sha256 | N/A  |
-  +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+--------------|-----------------------------------------------------------+------+------+--------+------+
+  +--------- +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+--------------+-----------------------------------------------------------+------+------+--------+------+
+  |  In Sync |               Item               |     Status    |                          subjectAltName                          |        emailAddress       |  Environment |                          Location                         | Type | Size | Digest | Days |
+  +--------- +----------------------------------+---------------+------------------------------------------------------------------+---------------------------+--------------+-----------------------------------------------------------+------+------+--------+------+
+  |  True    |   lecm-test.distributed-ci.io    |   Generated   |                 DNS:lecm-test.distributed-ci.io                  | distributed-ci@redhat.com |  production  |    /etc/letsencrypt/pem/lecm-test.distributed-ci.io.pem   | RSA  | 4096 | sha256 |  89  |
+  |  False   | lecm-test-test.distributed-ci.io | Not-Generated | DNS;lecm-test-test.distributed-ci.io,DNS:lecm.distributedi-ci.io | distributed-ci@redhat.com |    staging   | /etc/letsencrypt/pem/lecm-test-test.distributed-ci.io.pem | RSA  | 2048 | sha256 | N/A  |
+  +----------+----------------------------------+---------------+------------------------------------------------------------------+---------------------------+--------------|-----------------------------------------------------------+------+------+--------+------+
 
 
 Configuration
