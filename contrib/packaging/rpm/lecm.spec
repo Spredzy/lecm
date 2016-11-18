@@ -6,8 +6,8 @@ Release:        1%{?dist}
 
 Summary:        Let's Encrypt Certificate Manager
 License:        ASL 2.0
-URL:            http://pypi.io/pypi/%{srcname}
-Source0:        http://pypi.io/packages/source/l/%{srcname}/%{srcname}-%{version}.tar.gz
+URL:            https://pypi.io/pypi/%{srcname}
+Source0:        https://pypi.io/packages/source/l/%{srcname}/%{srcname}-%{version}.tar.gz
 Source1:        lecm.cron
 Source2:        lecm.1.gz
 
@@ -55,6 +55,7 @@ install -p -m 0644 sample/*.conf %{buildroot}%{_datadir}/%{srcname}/sample/
 
 %files
 %doc README.rst
+%license LICENSE
 %{python3_sitelib}/%{srcname}
 %{python3_sitelib}/*.egg-info
 %{_bindir}/%{srcname}
