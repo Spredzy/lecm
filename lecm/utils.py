@@ -14,6 +14,7 @@
 # limitations under the License.
 
 from prettytable import PrettyTable
+from OpenSSL import crypto
 
 import copy
 import logging
@@ -78,3 +79,53 @@ def reload_service(service_name, service_provider):
                 command = 'systemctl reload %s' % service
             p = subprocess.Popen(command.split())
             p.wait()
+
+
+def get_subjectaltname(certificate):
+    """Return subjectAltName associated with certificate. """
+
+    return certificate.get_extension(6)._subjectAltNameString()
+
+
+def get_environment(certificate):
+    """Return environment associated with certificate. """
+
+    STAGING_ENV = "Fake LE Intermediate X1"
+
+    for component in certificate.get_issuer().get_components():
+        if component[0] == 'CN':
+            if component[1] == STAGING_ENV:
+                return 'staging'
+            else:
+                return 'production'
+
+    return None
+
+
+def is_sync(certificate):
+    """Return true or false if certificate and definition are in sync,
+
+       Certificate and definitions are said to be in sync if the following
+       parameters match:
+
+         * Issuer CN
+         * SubjectAltName"""
+
+    original_certificate = '%s/pem/%s.pem' % (certificate['path'],
+                                              certificate['name'])
+
+    if not os.path.exists(original_certificate):
+        return False
+
+    buf = open(original_certificate).read()
+    pem = crypto.load_certificate(crypto.FILETYPE_PEM, buf)
+
+    cur_environment = get_environment(pem)
+    cur_subjectaltname = get_subjectaltname(pem)
+
+    if cur_environment != certificate.get('environment', 'production') or \
+        cur_subjectaltname != \
+            'DNS:%s' % ', DNS:'.join(certificate['subjectAltName']):
+        return False
+
+    return True

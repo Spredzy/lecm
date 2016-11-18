@@ -20,7 +20,8 @@ import os
 
 
 def list(certificates):
-    result = [['Item', []],
+    result = [['In Sync', []],
+              ['Item', []],
               ['Status', []],
               ['subjectAltName', []],
               ['Location', []],
@@ -28,20 +29,22 @@ def list(certificates):
     for name, parameters in certificates.items():
         cert = certificate.Certificate(parameters)
 
-        result[0][1].append(cert.name)
+        result[0][1].append(utils.is_sync(parameters))
+        result[1][1].append(cert.name)
         if os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
-            result[1][1].append('Generated')
+            result[2][1].append('Generated')
         else:
-            result[1][1].append('Not-Generated')
-        result[2][1].append(cert.subjectAltName)
-        result[3][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
-        result[4][1].append(cert.days_before_expiry)
+            result[2][1].append('Not-Generated')
+        result[3][1].append(cert.subjectAltName)
+        result[4][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
+        result[5][1].append(cert.days_before_expiry)
 
     utils.output_informations(result)
 
 
 def list_details(certificates):
-    result = [['Item', []],
+    result = [['In Sync', []],
+              ['Item', []],
               ['Status', []],
               ['subjectAltName', []],
               ['emailAddress', []],
@@ -54,18 +57,19 @@ def list_details(certificates):
     for name, parameters in certificates.items():
         cert = certificate.Certificate(parameters)
 
-        result[0][1].append(cert.name)
+        result[0][1].append(utils.is_sync(parameters))
+        result[1][1].append(cert.name)
         if os.path.exists('%s/pem/%s.pem' % (cert.path, cert.name)):
-            result[1][1].append('Generated')
+            result[2][1].append('Generated')
         else:
-            result[1][1].append('Not-Generated')
-        result[2][1].append(cert.subjectAltName)
-        result[3][1].append(cert.subject['emailAddress'])
-        result[4][1].append(cert.environment)
-        result[5][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
-        result[6][1].append(cert.type)
-        result[7][1].append(cert.size)
-        result[8][1].append(cert.digest)
-        result[9][1].append(cert.days_before_expiry)
+            result[2][1].append('Not-Generated')
+        result[3][1].append(cert.subjectAltName)
+        result[4][1].append(cert.subject['emailAddress'])
+        result[5][1].append(cert.environment)
+        result[6][1].append('%s/pem/%s.pem' % (cert.path, cert.name))
+        result[7][1].append(cert.type)
+        result[8][1].append(cert.size)
+        result[9][1].append(cert.digest)
+        result[10][1].append(cert.days_before_expiry)
 
     utils.output_informations(result)
