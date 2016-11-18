@@ -286,25 +286,29 @@ class Certificate(object):
     def generate(self):
 
         self._create_filesystem()
-        self._get_intermediate_certificate()
+
+        certificate_name = os.path.basename(_INTERMEDIATE_CERTIFICATE_URL)
+        if not os.path.exists('%s/pem/%s' % (self.path, certificate_name)):
+            self._get_intermediate_certificate()
+
+        # Ensure there is no left-over from previous setup
+        #
+        try:
+            LOG.info('[%s] Removing older files (if any)' % self.name)
+            os.remove('%s/private/%s.key' % (self.path, self.name))
+            os.remove('%s/csr/%s.csr' % (self.path, self.name))
+            os.rmdir('%s/challenges/%s' % (self.path, self.name))
+            os.remove('%s/certs/%s.key' % (self.path, self.name))
+        except OSError:
+            pass
+
         if not os.path.exists('%s/private/%s' %
                               (self.path, self.account_key_name)):
             self._create_account_key()
-
-        if not os.path.exists('%s/private/%s.key' %
-                              (self.path, self.name)):
-            self._create_private_key()
-
-        if not os.path.exists('%s/csr/%s.csr' %
-                              (self.path, self.name)):
-            self._create_csr()
-
-        if not os.path.exists('%s/challenges/%s' % (self.path, self.name)):
-            os.makedirs('%s/challenges/%s' % (self.path, self.name))
-
-        if not os.path.exists('%s/certs/%s.key' %
-                              (self.path, self.name)):
-            self._create_certificate()
+        self._create_private_key()
+        self._create_csr()
+        os.makedirs('%s/challenges/%s' % (self.path, self.name))
+        self._create_certificate()
 
     def renew(self):
         self._create_csr()

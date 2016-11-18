@@ -55,6 +55,9 @@ renew all certificates managed by lecm, according */etc/lecm.conf*
 \--renew
 :   Renew already generated SSL Certificates
 
+\--force
+:   Force regeneration or renewal of SSL Certificates
+
 # SEE ALSO
 
 The lecm source code and all documentation may be downloaded from

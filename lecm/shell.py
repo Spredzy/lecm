@@ -74,7 +74,8 @@ def main():
                         noop_holder[name] = parameters
                 else:
                     if not os.path.exists('%s/pem/%s.pem' %
-                                          (cert.path, cert.name)):
+                                          (cert.path, cert.name)) or \
+                       options.force:
                         cert.generate()
                         certs.append(cert)
                         if 'service_name' in parameters:
@@ -94,8 +95,9 @@ def main():
                        cert.days_before_expiry <= cert.remaining_days:
                         noop_holder[name] = parameters
                 else:
-                    if isinstance(cert.days_before_expiry, int) and \
-                       cert.days_before_expiry <= cert.remaining_days:
+                    if (isinstance(cert.days_before_expiry, int) and
+                       cert.days_before_expiry <= cert.remaining_days) or \
+                       options.force:
                         cert.renew()
                         certs.append(cert)
                         if 'service_name' in parameters:

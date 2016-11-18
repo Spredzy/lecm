@@ -44,6 +44,9 @@ def parse():
                         help='Generate Let''s Encrypt SSL Certificates')
     parser.add_argument('--renew', action='store_true',
                         help='Renew already generated SSL Certificates')
+    parser.add_argument('--force', action='store_true',
+                        help='Force renewal or reneration of the SSL \
+                              Certificates')
     options = parser.parse_args()
 
     if len([value for value in vars(options).values() if value]) == 0:

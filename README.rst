@@ -61,6 +61,14 @@ configuration file that are not present in the filesystem.
 ``lecm --renew`` will renew SSL certificates already present on the filesystem
 if its expiry date is lower than the ``remainin_days`` value.
 
+
+``--force``
+^^^^^^^^^^^
+
+``lecm --force`` will force the regeneration or renewal of SSL certificates, even
+if its expiry date is not lower than the ``remainin_days`` value.
+
+
 ``--list``
 ^^^^^^^^^^
 
