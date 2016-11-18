@@ -1,5 +1,17 @@
 # Change Log
 
+## [0.0.7](https://github.com/Spredzy/lecm/tree/0.0.7) (2016-11-18)
+
+[Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.6...0.0.7)
+
+**Merged pull requests:**
+
+- Service reload: Optimize the way services are reloaded [\#52](https://github.com/Spredzy/lecm/pull/52) ([Spredzy](https://github.com/Spredzy))
+- Display a flag showing if conf and cert are in sync [\#51](https://github.com/Spredzy/lecm/pull/51) ([Spredzy](https://github.com/Spredzy))
+- Allow user to force regenerate/renew certificates [\#50](https://github.com/Spredzy/lecm/pull/50) ([Spredzy](https://github.com/Spredzy))
+- Renew: Do not fail when no certificate has already been generated [\#47](https://github.com/Spredzy/lecm/pull/47) ([Spredzy](https://github.com/Spredzy))
+- Fedora: Prepare for the release in Fedora [\#45](https://github.com/Spredzy/lecm/pull/45) ([Spredzy](https://github.com/Spredzy))
+
 ## [0.0.6](https://github.com/Spredzy/lecm/tree/0.0.6) (2016-11-09)
 [Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.5...0.0.6)
 
@@ -9,6 +21,7 @@
 
 **Merged pull requests:**
 
+- 0.0.6: Prepare release [\#44](https://github.com/Spredzy/lecm/pull/44) ([Spredzy](https://github.com/Spredzy))
 - Print USAGE message when no parameter has been passed [\#43](https://github.com/Spredzy/lecm/pull/43) ([Spredzy](https://github.com/Spredzy))
 - certificates: Allow one to use Let's Encrypt staging API [\#42](https://github.com/Spredzy/lecm/pull/42) ([Spredzy](https://github.com/Spredzy))
 - setup.py: Fix url and add Python 3.5 support [\#41](https://github.com/Spredzy/lecm/pull/41) ([Spredzy](https://github.com/Spredzy))

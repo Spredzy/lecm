@@ -1,13 +1,13 @@
 %global srcname lecm
 
 Name:           %{srcname}
-Version:        0.0.6
+Version:        0.0.7
 Release:        1%{?dist}
 
 Summary:        Let's Encrypt Certificate Manager
 License:        ASL 2.0
-URL:            http://pypi.python.org/pypi/%{srcname}
-Source0:        http://pypi.python.org/packages/source/l/%{srcname}/%{srcname}-%{version}.tar.gz
+URL:            http://pypi.io/pypi/%{srcname}
+Source0:        http://pypi.io/packages/source/l/%{srcname}/%{srcname}-%{version}.tar.gz
 Source1:        lecm.cron
 Source2:        lecm.1.gz
 
@@ -63,6 +63,11 @@ install -p -m 0644 sample/*.conf %{buildroot}%{_datadir}/%{srcname}/sample/
 %config(noreplace) %{_sysconfdir}/cron.d/%{srcname}
 
 %changelog
+* Fri Nov 18 2016 Yanis Guenane <yguenane@redhat.com> 0.0.7-1
+- Service reload: Optimize the way services are reloaded #52
+- Display a flag showing if conf and cert are in sync #51
+- Allow user to force regenerate/renew certificates #50
+- Renew: Do not fail when no certificate has already been generated #47
 
 * Wed Nov 09 2016 Yanis Guenane <yguenane@redhat.com> 0.0.6-1
 - doc: Added instal. documentation (pypi/debian) #37
