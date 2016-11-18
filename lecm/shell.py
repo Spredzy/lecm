@@ -47,7 +47,6 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
-    _CHANGE = False
     _CONF = {}
     if options.conf:
         _CONF['file_path'] = options.conf
@@ -62,6 +61,10 @@ def main():
         lists.list_details(certificates)
     else:
         noop_holder = {}
+        certs = []
+        certs_w_service_name = []
+        services_to_restart = []
+
         for name, parameters in certificates.items():
             cert = certificate.Certificate(parameters)
             if options.generate:
@@ -73,14 +76,18 @@ def main():
                     if not os.path.exists('%s/pem/%s.pem' %
                                           (cert.path, cert.name)):
                         cert.generate()
-                        _CHANGE = True
-                        # If the service for a specific certificate is
-                        # different than the 'default' service_name or
-                        # no default is specified then reload the service
-                        # right after certificate generation, else reload
-                        # it just once at the end
-                        if should_reload(cert, global_configuration):
-                            cert.reload_service()
+                        certs.append(cert)
+                        if 'service_name' in parameters:
+                            certs_w_service_name.append(cert)
+                            if not isinstance(parameters['service_name'], list):  # noqa
+                                services_to_restart.append(
+                                    [parameters['service_name']]
+                                )
+                            else:
+                                services_to_restart.append(
+                                    parameters['service_name']
+                                )
+
             elif options.renew:
                 if options.noop:
                     if isinstance(cert.days_before_expiry, int) and \
@@ -90,18 +97,26 @@ def main():
                     if isinstance(cert.days_before_expiry, int) and \
                        cert.days_before_expiry <= cert.remaining_days:
                         cert.renew()
-                        _CHANGE = True
-                        # If the service for a specific certificate is
-                        # different than the 'default' service_name or
-                        # no default is specified then reload the service
-                        # right after certificate generation, else reload
-                        # it just once at the end
-                        if should_reload(cert, global_configuration):
-                            cert.reload_service()
+                        certs.append(cert)
+                        if 'service_name' in parameters:
+                            certs_w_service_name.append(cert)
+                            if not isinstance(parameters['service_name'], list):  # noqa
+                                services_to_restart.append(
+                                    [parameters['service_name']]
+                                )
+                            else:
+                                services_to_restart.append(
+                                    parameters['service_name']
+                                )
 
-        if not options.noop and _CHANGE:
+        if len(certs) != len(certs_w_service_name):
+            services_to_restart.append(
+                global_configuration.get('service_name', ['httpd'])
+            )
+
+        if certs and not options.noop:
             utils.reload_service(
-                global_configuration.get('service_name', 'httpd'),
+                list(set(sum(services_to_restart, []))),
                 global_configuration.get('service_provider', 'systemd')
             )
         if options.noop:
