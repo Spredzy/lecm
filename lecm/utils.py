@@ -122,10 +122,11 @@ def is_sync(certificate):
 
     cur_environment = get_environment(pem)
     cur_subjectaltname = get_subjectaltname(pem)
+    cert_san = certificate.get('subjectAltName', [certificate.get('name')])
 
     if cur_environment != certificate.get('environment', 'production') or \
         cur_subjectaltname != \
-            'DNS:%s' % ', DNS:'.join(certificate['subjectAltName']):
+            'DNS:%s' % ', DNS:'.join(cert_san):
         return False
 
     return True
