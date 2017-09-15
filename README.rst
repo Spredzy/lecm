@@ -168,7 +168,9 @@ Httpd and Nginx
 ---------------
 
 ``lecm`` does not configure the webservers, they have to be previously
-configured to be able to answer the challenges.
+configured to be able to answer the challenges. NOTE: Let's
+Encrypt will perform a plain HTTP request to port 80 on your server, so you
+must serve the challenge files via HTTP.
 
 httpd
 ^^^^^
