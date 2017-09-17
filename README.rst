@@ -168,7 +168,10 @@ Httpd and Nginx
 ---------------
 
 ``lecm`` does not configure the webservers, they have to be previously
-configured to be able to answer the challenges.
+configured to be able to answer the challenges. NOTE: Let's
+Encrypt will perform a plain HTTP request to port 80 on your server, so you
+must serve the challenge files via HTTP. See the HTTP Challenge section
+of the `ACME specification`_ for more details.
 
 httpd
 ^^^^^
@@ -203,3 +206,4 @@ nginx
 
 .. _Let's Encrypt: https://letsencrypt.org/
 .. _official Debian package for lecm: https://tracker.debian.org/pkg/lecm
+.. _ACME specification: https://tools.ietf.org/html/draft-ietf-acme-acme-07#section-8.3
