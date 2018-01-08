@@ -126,7 +126,7 @@ def is_sync(certificate):
 
     if cur_environment != certificate.get('environment', 'production') or \
         cur_subjectaltname != \
-            'DNS:%s' % ', DNS:'.join(cert_san):
+            'DNS:%s' % ', DNS:'.join(sorted(cert_san)):
         return False
 
     return True
