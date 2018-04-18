@@ -26,7 +26,8 @@ _FIELDS = ['type', 'size', 'digest', 'version', 'subjectAltName',
            'countryName', 'stateOrProvinceName', 'localityName',
            'organizationName', 'organizationUnitName', 'commonName',
            'emailAddress', 'account_key_name', 'path', 'remaining_days',
-           'service_name', 'service_provider', 'environment']
+           'service_name', 'service_provider', 'environment',
+           'ocsp_must_staple', 'ocsp_must_staple_critical']
 
 
 def check_configuration_file_existence(configuration_file_path=None):

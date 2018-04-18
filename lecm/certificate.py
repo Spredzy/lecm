@@ -19,9 +19,20 @@ from OpenSSL import crypto
 import datetime
 import logging
 import os
+import OpenSSL
 import requests
 import socket
 import subprocess
+
+
+if OpenSSL.SSL.OPENSSL_VERSION_NUMBER >= 0x10100000:
+    # OpenSSL 1.1.0 or newer
+    MUST_STAPLE_NAME = b"tlsfeature"
+    MUST_STAPLE_VALUE = b"status_request"
+else:
+    # OpenSSL 1.0.x or older
+    MUST_STAPLE_NAME = b"1.3.6.1.5.5.7.1.24"
+    MUST_STAPLE_VALUE = b"DER:30:03:02:01:05"
 
 LOG = logging.getLogger(__name__)
 
@@ -49,6 +60,9 @@ class Certificate(object):
         self.days_before_expiry = self.get_days_before_expiry()
         self.service_name = conf.get('service_name', 'httpd')
         self.service_provider = conf.get('service_provider', 'systemd')
+        self.ocsp_must_staple = conf.get('ocsp_must_staple', False)
+        self.ocsp_must_staple_critical = \
+            conf.get('ocsp_must_staple_critical', False)
 
         self.subject = {
           'C': conf.get('countryName'),
@@ -197,14 +211,18 @@ class Certificate(object):
         LOG.info('[%s] Attaching SAN extention: %s' %
                  (self.name, self.subjectAltName))
 
-        try:
-            req.add_extensions([crypto.X509Extension(
-                bytes('subjectAltName', 'utf-8'), False,
-                bytes(self.subjectAltName, 'utf-8')
-            )])
-        except TypeError:
-            req.add_extensions([crypto.X509Extension('subjectAltName', False,
-                                                     self.subjectAltName)])
+        extensions = [crypto.X509Extension(b"subjectAltName", False,
+                      self.subjectAltName.encode('ascii'))]
+        if self.ocsp_must_staple:
+            LOG.info('[%s] Enabling OCSP Must Staple' % self.name)
+            extensions.append(
+                crypto.X509Extension(
+                    MUST_STAPLE_NAME,
+                    self.ocsp_must_staple_critical,
+                    MUST_STAPLE_VALUE
+                )
+            )
+        req.add_extensions(extensions)
 
         LOG.debug('[%s] Loading private key: %s/private/%s.key' %
                   (self.name, self.path, self.name))

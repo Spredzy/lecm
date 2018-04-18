@@ -105,45 +105,49 @@ Configuration
 
 Every parameters are either applicable globally or within the scope of a certificate. The finest specification wins.
 
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| Parameter              | Scope               | Default           | Description                                                                   |
-+========================+=====================+===================+===============================================================================+
-| path                   | global, certificate | None              | Folder where will reside all the relevant files                               |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| type                   | global, certificate | RSA               | Type of the key to generate (Possible: RSA, DSA)                              |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| size                   | global, certificate | 4096              | Size of the key to generate                                                   |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| digest                 | global, certificate | sha256            | Digest of the key to generate                                                 |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| version                | global, certificate | 3                 | Version of the SSL Certificate to generate                                    |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| subjectAltName         | global, certificate | None              | subjectAltName value of the Certificate Signing Request (csr)                 |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| countryName            | global, certificate | None              | countryName value of the Certificate Signing Request (csr)                    |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| stateOrProvinceName    | global, certificate | None              | stateOrProvinceName value of the Certificate Signing Request (csr)            |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| localityName           | global, certificate | None              | localityName value of the Certificate Signing Request (csr)                   |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| organizationName       | global, certificate | None              | organizationName value of the Certificate Signing Request (csr)               |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| organizationalUnitName | global, certificate | None              | organizationalUnitName value of the Certificate Signing Request (csr)         |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| commonName             | global, certificate | None              | commonName value of the Certificate Signing Request (csr)                     |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| emailAddress           | global, certificate | None              | emailAddress value of the Certificate Signing Request (csr)                   |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| account_key_name       | global, certificate | account_$fqdn.key | Name of the account key to generate                                           |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| remaining_days         | global, certificate | 10                | Number of days of validity below which the SSL Certificate should be renewed  |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| service_name           | global, certificate | httpd             | Service that needs to be reloaded for the change to be taken in consideration |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| service_provider       | global, certificate | systemd           | Service management system (Possible: systemd, sysv)                           |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
-| environment            | global, certificate | production        | Let's Encrypt environment to use (Possible: production, staging)              |
-+------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| Parameter                 | Scope               | Default           | Description                                                                   |
++============================+=====================+===================+===============================================================================+
+| path                      | global, certificate | None              | Folder where will reside all the relevant files                               |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| type                      | global, certificate | RSA               | Type of the key to generate (Possible: RSA, DSA)                              |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| size                      | global, certificate | 4096              | Size of the key to generate                                                   |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| digest                    | global, certificate | sha256            | Digest of the key to generate                                                 |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| version                   | global, certificate | 3                 | Version of the SSL Certificate to generate                                    |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| subjectAltName            | global, certificate | None              | subjectAltName value of the Certificate Signing Request (csr)                 |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| countryName               | global, certificate | None              | countryName value of the Certificate Signing Request (csr)                    |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| stateOrProvinceName       | global, certificate | None              | stateOrProvinceName value of the Certificate Signing Request (csr)            |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| localityName              | global, certificate | None              | localityName value of the Certificate Signing Request (csr)                   |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| organizationName          | global, certificate | None              | organizationName value of the Certificate Signing Request (csr)               |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| organizationalUnitName    | global, certificate | None              | organizationalUnitName value of the Certificate Signing Request (csr)         |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| commonName                | global, certificate | None              | commonName value of the Certificate Signing Request (csr)                     |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| emailAddress              | global, certificate | None              | emailAddress value of the Certificate Signing Request (csr)                   |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| account_key_name          | global, certificate | account_$fqdn.key | Name of the account key to generate                                           |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| remaining_days            | global, certificate | 10                | Number of days of validity below which the SSL Certificate should be renewed  |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| service_name              | global, certificate | httpd             | Service that needs to be reloaded for the change to be taken in consideration |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| service_provider          | global, certificate | systemd           | Service management system (Possible: systemd, sysv)                           |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| environment               | global, certificate | production        | Let's Encrypt environment to use (Possible: production, staging)              |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| ocsp_must_staple          | global, certificate | False             | Should the OCSP Must Staple extension should be added to the certificate      |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
+| ocsp_must_staple_critical | global, certificate | False             | Should the OCSP Must Staple extension should be set a critical                |
++---------------------------+---------------------+-------------------+-------------------------------------------------------------------------------+
 
 
 Configuration file example

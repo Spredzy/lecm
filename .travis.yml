@@ -7,3 +7,7 @@ python:
 install:
   - pip install -r test-requirements.txt
 script: tox
+
+matrix:
+  allow_failures:
+    - python: nightly
