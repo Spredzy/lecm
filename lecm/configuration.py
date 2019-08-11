@@ -22,11 +22,27 @@ import yaml
 
 LOG = logging.getLogger(__name__)
 
-_FIELDS = ['type', 'size', 'digest', 'version', 'subjectAltName',
-           'countryName', 'stateOrProvinceName', 'localityName',
-           'organizationName', 'organizationUnitName', 'commonName',
-           'emailAddress', 'account_key_name', 'path', 'remaining_days',
-           'service_name', 'service_provider', 'environment']
+_FIELDS = [
+    "type",
+    "size",
+    "digest",
+    "version",
+    "subjectAltName",
+    "countryName",
+    "stateOrProvinceName",
+    "localityName",
+    "organizationName",
+    "organizationUnitName",
+    "commonName",
+    "emailAddress",
+    "account_key_name",
+    "path",
+    "remaining_days",
+    "service_name",
+    "service_provider",
+    "environment",
+    "use_generic_challenge_dir",
+]
 
 
 def check_configuration_file_existence(configuration_file_path=None):

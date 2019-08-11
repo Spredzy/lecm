@@ -47,8 +47,9 @@ class Certificate(object):
                                          'account_%s.key' % socket.getfqdn())
         self.remaining_days = conf.get('remaining_days', 10)
         self.days_before_expiry = self.get_days_before_expiry()
-        self.service_name = conf.get('service_name', 'httpd')
-        self.service_provider = conf.get('service_provider', 'systemd')
+        self.service_name = conf.get("service_name", "httpd")
+        self.service_provider = conf.get("service_provider", "systemd")
+        self.use_generic_challenge_dir = conf.get("use_generic_challenge_dir", False)
 
         self.subject = {
           'C': conf.get('countryName'),
@@ -226,23 +227,38 @@ class Certificate(object):
         csr_file.close()
 
     def _create_certificate(self):
-        LOG.info('[%s] Retrieving certificate from Let''s Encrypt Server' %
-                 self.name)
-        command = 'acme-tiny --account-key %s/private/%s --csr %s/csr/%s.csr \
-                  --acme-dir %s/challenges/%s' % (self.path,
-                                                  self.account_key_name,
-                                                  self.path, self.name,
-                                                  self.path, self.name)
+        LOG.info("[%s] Retrieving certificate from Let" "s Encrypt Server" % self.name)
+        if self.use_generic_challenge_dir:
+            command = (
+                "acme-tiny --account-key %s/private/%s --csr %s/csr/%s.csr \
+                      --acme-dir %s/challenges/"
+                % (self.path, self.account_key_name, self.path, self.name, self.path)
+            )
+        else:
+            command = (
+                "acme-tiny --account-key %s/private/%s --csr %s/csr/%s.csr \
+                      --acme-dir %s/challenges/%s"
+                % (
+                    self.path,
+                    self.account_key_name,
+                    self.path,
+                    self.name,
+                    self.path,
+                    self.name,
+                )
+            )
 
-        if self.environment == 'staging':
-            LOG.info('[%s] Using Let''s Encrypt staging API: %s' %
-                     (self.name, _STAGING_URL))
-            command = '%s --ca %s' % (command, _STAGING_URL)
+        if self.environment == "staging":
+            LOG.info(
+                "[%s] Using Let" "s Encrypt staging API: %s" % (self.name, _STAGING_URL)
+            )
+            command = "%s --ca %s" % (command, _STAGING_URL)
 
-        cert_file_f = open('%s/certs/%s.crt.new' % (self.path, self.name), 'w')
+        cert_file_f = open("%s/certs/%s.crt.new" % (self.path, self.name), "w")
 
-        p = subprocess.Popen(command.split(), stdout=cert_file_f,
-                             stderr=subprocess.PIPE)
+        p = subprocess.Popen(
+            command.split(), stdout=cert_file_f, stderr=subprocess.PIPE
+        )
         out, err = p.communicate()
 
         if p.returncode != 0:
