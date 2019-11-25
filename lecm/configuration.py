@@ -68,7 +68,7 @@ def load_configuration(conf):
         raise exceptions.ConfigurationExceptions(exc)
 
     try:
-        conf = yaml.load(file_path_content)
+        conf = yaml.load(file_path_content, Loader=yaml.FullLoader)
     except yaml.YAMLError as exc:
         raise exceptions.ConfigurationExceptions(exc)
 
