@@ -105,14 +105,15 @@ class Certificate(object):
                 utils.enforce_selinux_context(self.path)
 
     def _get_intermediate_certificate(self):
-        certificate = requests.get(_INTERMEDIATE_CERTIFICATE_URL).text
         certificate_name = os.path.basename(_INTERMEDIATE_CERTIFICATE_URL)
-
-        LOG.info('[global] Getting intermediate certificate PEM file: %s' %
-                 certificate_name)
         if not os.path.exists('%s/pem/%s' % (self.path, certificate_name)):
-            with open('%s/pem/%s' % (self.path, certificate_name), 'w') as f:
-                f.write(certificate)
+            certificate = requests.get(_INTERMEDIATE_CERTIFICATE_URL).text
+
+            LOG.info('[global] Getting intermediate certificate PEM file: %s' %
+                     certificate_name)
+            if not os.path.exists('%s/pem/%s' % (self.path, certificate_name)):
+                with open('%s/pem/%s' % (self.path, certificate_name), 'w') as f:
+                    f.write(certificate)
 
     def _create_account_key(self):
         account_key = crypto.PKey()
@@ -257,6 +258,7 @@ class Certificate(object):
 
             LOG.debug('[%s] Concatenating certificate with intermediate pem: \
                       %s/pem/%s.pem' % (self.name, self.path, self.name))
+            self._get_intermediate_certificate()
             pem_filename = os.path.basename(_INTERMEDIATE_CERTIFICATE_URL)
             filenames = ['%s/certs/%s.crt' % (self.path, self.name),
                          '%s/pem/%s' % (self.path, pem_filename)]
@@ -286,10 +288,6 @@ class Certificate(object):
     def generate(self):
 
         self._create_filesystem()
-
-        certificate_name = os.path.basename(_INTERMEDIATE_CERTIFICATE_URL)
-        if not os.path.exists('%s/pem/%s' % (self.path, certificate_name)):
-            self._get_intermediate_certificate()
 
         # Ensure there is no left-over from previous setup
         #
