@@ -1,7 +1,7 @@
 %global srcname lecm
 
 Name:           %{srcname}
-Version:        0.0.7
+Version:        0.0.9
 Release:        1%{?dist}
 
 Summary:        Let's Encrypt Certificate Manager
@@ -64,6 +64,10 @@ install -p -m 0644 sample/*.conf %{buildroot}%{_datadir}/%{srcname}/sample/
 %config(noreplace) %{_sysconfdir}/cron.d/%{srcname}
 
 %changelog
+* Tue Jan 12 2021 Yanis Guenane <yguenane@redhat.com> 0.0.9-1
+- Certificate: Roll-out from X3 intermediate to R3
+- Get the intermediate certificate whenever needed
+
 * Fri Nov 18 2016 Yanis Guenane <yguenane@redhat.com> 0.0.7-1
 - Service reload: Optimize the way services are reloaded #52
 - Display a flag showing if conf and cert are in sync #51

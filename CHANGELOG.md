@@ -1,5 +1,14 @@
 # Change Log
 
+## [0.0.9](https://github.com/Spredzy/lecm/tree/0.0.9) (2021-01-12)
+
+[Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.7...0.0.9)
+
+**Merged pull requests:**
+
+- Get the intermediate certificate whenever needed [\#64](https://github.com/Spredzy/lecm/pull/64) ([fcharlier](https://github.com/fcharlier))
+- Certificate: Roll-out from X3 intermediate to R3 [\#63](https://github.com/Spredzy/lecm/pull/63) ([sbadia](https://github.com/sbadia))
+
 ## [0.0.7](https://github.com/Spredzy/lecm/tree/0.0.7) (2016-11-18)
 
 [Full Changelog](https://github.com/Spredzy/lecm/compare/0.0.6...0.0.7)
