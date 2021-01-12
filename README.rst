@@ -86,7 +86,7 @@ if its expiry date is not lower than the ``remainin_days`` value.
 
 
 ``--list-details``
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 
 ``lecm --list-details`` will display details informations about currently configured items.
 
