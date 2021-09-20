@@ -26,7 +26,7 @@ import subprocess
 LOG = logging.getLogger(__name__)
 
 _INTERMEDIATE_CERTIFICATE_URL = \
-    'https://letsencrypt.org/certs/lets-encrypt-r3-cross-signed.pem'
+    'https://letsencrypt.org/certs/lets-encrypt-r3.pem'
 
 _STAGING_URL = \
     'https://acme-staging.api.letsencrypt.org'
