@@ -19,14 +19,11 @@ from OpenSSL import crypto
 import datetime
 import logging
 import os
-import requests
+import shutil
 import socket
 import subprocess
 
 LOG = logging.getLogger(__name__)
-
-_INTERMEDIATE_CERTIFICATE_URL = \
-    'https://letsencrypt.org/certs/lets-encrypt-r3-cross-signed.pem'
 
 _STAGING_URL = \
     'https://acme-staging.api.letsencrypt.org'
@@ -103,17 +100,6 @@ class Certificate(object):
             if not os.path.exists('%s/%s' % (self.path, folder)):
                 os.makedirs('%s/%s' % (self.path, folder))
                 utils.enforce_selinux_context(self.path)
-
-    def _get_intermediate_certificate(self):
-        certificate_name = os.path.basename(_INTERMEDIATE_CERTIFICATE_URL)
-        if not os.path.exists('%s/pem/%s' % (self.path, certificate_name)):
-            certificate = requests.get(_INTERMEDIATE_CERTIFICATE_URL).text
-
-            LOG.info('[global] Getting intermediate certificate PEM file: %s' %
-                     certificate_name)
-            if not os.path.exists('%s/pem/%s' % (self.path, certificate_name)):
-                with open('%s/pem/%s' % (self.path, certificate_name), 'w') as f:
-                    f.write(certificate)
 
     def _create_account_key(self):
         account_key = crypto.PKey()
@@ -226,6 +212,40 @@ class Certificate(object):
                                                         req)).decode('utf-8'))
         csr_file.close()
 
+    def _extract_cert_chain(self):
+        """ Extracts the intermediate and/or root certificates from a
+        certificate chain file"""
+
+        def split_cert_chain(chain_lines):
+            """ Split separate certificates from an array of lines into an array
+            of cerficicates. """
+            certs = []
+            cert = ""
+            in_cert = False
+
+            for line in chain_lines:
+                if line == '-----BEGIN CERTIFICATE-----\n':
+                    cert = ""
+                    in_cert = True
+
+                if in_cert:
+                    cert += line
+
+                if in_cert and line == '-----END CERTIFICATE-----\n':
+                    certs.append(cert)
+                    in_cert = False
+                    cert = ""
+
+            return certs
+
+        LOG.info('[%s] Extracting the certificate chain from the generated'
+                 'certificate' % self.name)
+        with open('%s/certs/%s.crt' % (self.path, self.name), 'r') as cert_file, \
+             open('%s/pem/%s-chain.pem' % (self.path, self.name), 'w') as chain_file:
+            # Skip the first certificate which will be our certificate,
+            # the other certs in the chain will be the intermediate, root, etc.
+            chain_file.write('\n'.join(split_cert_chain(cert_file.readlines())[1:]))
+
     def _create_certificate(self):
         LOG.info('[%s] Retrieving certificate from Let''s Encrypt Server' %
                  self.name)
@@ -256,16 +276,11 @@ class Certificate(object):
             os.rename('%s/certs/%s.crt.new' % (self.path, self.name),
                       '%s/certs/%s.crt' % (self.path, self.name))
 
-            LOG.debug('[%s] Concatenating certificate with intermediate pem: \
+            LOG.debug('[%s] Copying certificate to the final destination: \
                       %s/pem/%s.pem' % (self.name, self.path, self.name))
-            self._get_intermediate_certificate()
-            pem_filename = os.path.basename(_INTERMEDIATE_CERTIFICATE_URL)
-            filenames = ['%s/certs/%s.crt' % (self.path, self.name),
-                         '%s/pem/%s' % (self.path, pem_filename)]
-            with open('%s/pem/%s.pem' % (self.path, self.name), 'w') as f:
-                for fname in filenames:
-                    with open(fname) as infile:
-                        f.write(infile.read())
+            shutil.copy('%s/certs/%s.crt' % (self.path, self.name),
+                        '%s/pem/%s.pem' % (self.path, self.name))
+            self._extract_cert_chain()
         return True
 
     def get_days_before_expiry(self):
