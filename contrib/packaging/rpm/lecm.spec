@@ -19,7 +19,6 @@ BuildRequires:  python3-devel
 Requires:       acme-tiny
 Requires:       python3-prettytable
 Requires:       python3-PyYAML
-Requires:       python3-requests
 Requires:       python3-pyOpenSSL
 
 %description
