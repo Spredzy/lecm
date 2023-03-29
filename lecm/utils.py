@@ -15,6 +15,7 @@
 
 from prettytable import PrettyTable
 from OpenSSL import crypto
+from distro import linux_distribution
 
 import copy
 import logging
@@ -45,8 +46,7 @@ def filter_certificates(items, certificates):
 
 
 def enforce_selinux_context(output_directory):
-
-    if platform.dist()[0] in ['fedora', 'centos', 'redhat']:
+    if linux_distribution()[0] in ['fedora', 'centos', 'redhat']:
         if os.path.exists('/sbin/semanage'):
             FNULL = open(os.devnull, 'w')
 
