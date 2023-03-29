@@ -320,7 +320,8 @@ class Certificate(object):
             self._create_account_key()
         self._create_private_key()
         self._create_csr()
-        os.makedirs('%s/challenges/%s' % (self.path, self.name))
+        if not os.path.exists('%s/challenges/%s' % (self.path, self.name)):
+            os.makedirs('%s/challenges/%s' % (self.path, self.name))
         self._create_certificate()
 
     def renew(self):
